@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Granular Speed settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="icons/48.png" alt="" width="28" height="28">
+      <h1>Granular Speed</h1>
+      <span id="status" class="status" role="status"></span>
+    </header>
+
+    <section>
+      <h2>Steps</h2>
+      <label class="field">
+        <span id="lowLabel">Step below 2×</span>
+        <span class="num"><input id="stepLow" type="number" min="0.01" max="4" step="0.01"><i>×</i></span>
+      </label>
+      <label class="field">
+        <span>Step size changes at</span>
+        <span class="num"><input id="threshold" type="number" min="0.1" max="16" step="0.05"><i>×</i></span>
+      </label>
+      <label class="field">
+        <span id="highLabel">Step above 2×</span>
+        <span class="num"><input id="stepHigh" type="number" min="0.01" max="4" step="0.01"><i>×</i></span>
+      </label>
+    </section>
+
+    <section>
+      <h2>Range</h2>
+      <label class="field">
+        <span>Slowest</span>
+        <span class="num"><input id="min" type="number" min="0.1" max="15.9" step="0.05"><i>×</i></span>
+      </label>
+      <label class="field">
+        <span>Fastest</span>
+        <span class="num"><input id="max" type="number" min="0.2" max="16" step="0.25"><i>×</i></span>
+      </label>
+      <p id="audioNote" class="note" hidden>
+        Firefox mutes audio above 8×. To keep the sound, raise
+        <code>media.audio.playbackrate.muting_threshold</code> in about:config.
+      </p>
+    </section>
+
+    <section>
+      <h2>Presets</h2>
+      <label class="field stack">
+        <span>Buttons in the player panel, up to 8</span>
+        <input id="presets" type="text" spellcheck="false" placeholder="1, 1.5, 2, 2.5, 3, 4">
+      </label>
+    </section>
+
+    <section>
+      <h2><span>Speeds you'll step through</span><span id="count" class="count"></span></h2>
+      <div id="preview" class="preview" aria-live="polite"></div>
+    </section>
+
+    <footer>
+      <button id="reset" type="button">Reset to defaults</button>
+    </footer>
+  </main>
+  <script src="shared.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
