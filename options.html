@@ -12,25 +12,22 @@
       <img src="icons/48.png" alt="" width="24" height="24">
       <h1>Granular Speed</h1>
       <span id="status" class="status" role="status"></span>
+      <button id="close" class="close" type="button" aria-label="Close settings" hidden></button>
     </header>
 
     <section class="scale-card" aria-labelledby="scaleTitle">
       <div class="scale-head">
-        <h2 id="scaleTitle">Speeds you step through</h2>
-        <span id="count" class="count"></span>
+        <h2 id="scaleTitle">Your speeds</h2>
+        <span class="hint">Drag the marker to move the switch point</span>
       </div>
       <svg id="scale" class="scale" role="group" aria-labelledby="scaleTitle"></svg>
-      <p class="hint">Drag the marker to change where the step size switches. Circles mark your presets.</p>
     </section>
 
     <section class="group" aria-labelledby="stepsTitle">
       <h2 id="stepsTitle">Steps</h2>
       <div id="stepRows" class="rows"></div>
-    </section>
-
-    <section class="group" aria-labelledby="rangeTitle">
-      <h2 id="rangeTitle">Range</h2>
-      <div id="rangeRows" class="rows"></div>
+      <h2 id="rangeTitle" class="subhead">Range</h2>
+      <div id="rangeRows" class="rows" role="group" aria-labelledby="rangeTitle"></div>
       <p id="audioNote" class="note" hidden>
         Firefox mutes audio above 8×. To keep the sound, raise
         <code>media.audio.playbackrate.muting_threshold</code> in about:config.
@@ -38,16 +35,16 @@
     </section>
 
     <section class="group" aria-labelledby="presetsTitle">
-      <h2 id="presetsTitle">Presets</h2>
-      <div id="chips" class="chips"></div>
-      <form id="addForm" class="add">
-        <label for="addInput">Add a speed</label>
-        <span class="add-field">
+      <div class="group-head">
+        <h2 id="presetsTitle">Presets</h2>
+        <form id="addForm" class="add">
+          <label for="addInput" class="sr-only">Add a preset speed</label>
           <input id="addInput" type="number" inputmode="decimal" step="0.05" min="0.1" max="16" placeholder="e.g. 2.3">
           <button type="submit">Add</button>
-        </span>
-      </form>
-      <p id="presetNote" class="note"></p>
+        </form>
+        <span id="presetNote" class="hint" hidden>8 is the limit. Remove one to add another.</span>
+      </div>
+      <div id="chips" class="chips"></div>
     </section>
 
     <footer class="foot">

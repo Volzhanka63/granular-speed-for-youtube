@@ -11,7 +11,7 @@ YouTube's speed menu stops at 2× and jumps in big steps. 1.75× drags, 2× is f
 - **Speeds past 2×.** Out of the box: 0.25× to 4×, in 0.25× steps up to 2× and 0.1× steps above it.
 - **Your own steps.** Change both step sizes, where they switch, the slowest and fastest speed (0.1× to 16×), and the preset buttons.
 - **Hotkeys.** `Shift` + `.` speeds up, `Shift` + `,` slows down, `R` jumps between 1× and your last speed. They work on any keyboard layout and stay quiet while you type.
-- **A button in the player.** It shows the current speed next to the subtitles button and hides with the rest of the controls. Scroll over it, or click it for a panel built to YouTube's own menu measurements: slider, presets, and a settings page inside the panel.
+- **A button in the player.** It shows the current speed next to the subtitles button and hides with the rest of the controls. Scroll over it, or click it for a panel built to YouTube's own menu measurements: slider, presets, and a button that opens the full settings over the page.
 - **Shorts too.** The button sits in Shorts' top-right controls, next to CC. Hotkeys show the new speed in a short bubble at the top of the video, even when the controls are hidden.
 - **It sticks.** YouTube resets the speed on every new video and ad. The extension sets yours back, across videos, tabs and restarts. Hover previews in the feed keep playing at normal speed.
 - **A one-minute welcome.** On install, a short page explains everything and lets you try the keys on the spot.
@@ -22,7 +22,7 @@ Download the signed `.xpi` from the [latest release](https://github.com/Volzhank
 
 ## Settings
 
-Change them without leaving the video: the tune icon in the player panel opens a settings page inside the panel. The same settings, with a live scale of every speed you'll step through, open from the toolbar button and `about:addons`. Changes apply right away in every open YouTube tab.
+Change them without leaving the video: the tune icon in the player panel opens the full settings in a popup over the page. The same settings, with a live scale of every speed you'll step through, open from the toolbar button and `about:addons`. Changes apply right away in every open YouTube tab.
 
 ![Settings inside the player panel](listing/screenshot-settings.png)
 

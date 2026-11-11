@@ -19,7 +19,7 @@
   },
   "action": {
     "default_title": "Granular Speed settings",
-    "default_popup": "options.html",
+    "default_popup": "options.html?view=popup",
     "default_icon": {
       "48": "icons/48.png",
       "96": "icons/96.png"
@@ -53,5 +53,15 @@
         ]
       }
     }
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "options.html"
+      ],
+      "matches": [
+        "*://www.youtube.com/*"
+      ]
+    }
+  ]
 }

@@ -233,8 +233,9 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
 .chip:hover svg { color: var(--text); }
 .empty { color: var(--muted); font-size: 13px; padding: 6px 0; }
 
-.add { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: var(--row-h); border-top: 1px solid var(--line); margin-top: 6px; }
-.add-field { display: inline-flex; gap: 6px; }
+.add { display: inline-flex; align-items: center; gap: 6px; }
+.add[hidden] { display: none; }
+.group-head .hint { text-align: right; }
 .add input {
   width: 76px;
   height: var(--step);
@@ -286,3 +287,52 @@ button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* Section heads with a short hint on the right */
+.scale-head .hint,
+.group-head .hint { font-size: 12px; }
+.group-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: var(--step); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.subhead { margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--line); }
+
+/* Close button, only when shown over YouTube */
+.close {
+  margin-left: 4px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.close:hover { background: var(--ctl-hover); color: var(--text); }
+.close[hidden] { display: none; }
+
+/*
+ * Compact: toolbar popup (Firefox caps it at 600px tall) and the popup over
+ * YouTube. Same 14px text; tighter rows, controls and spacing.
+ */
+[data-view="popup"] body { width: 380px; min-width: 0; }
+[data-view="overlay"] body { min-width: 0; }
+:is([data-view="popup"], [data-view="overlay"]) {
+  --row-h: 36px;
+  --step: 30px;
+}
+:is([data-view="popup"], [data-view="overlay"]) .app { padding: 10px 12px 12px; gap: 8px; }
+:is([data-view="popup"], [data-view="overlay"]) .top { min-height: 30px; }
+:is([data-view="popup"], [data-view="overlay"]) .top img { width: 22px; height: 22px; }
+:is([data-view="popup"], [data-view="overlay"]) .scale-card { padding: 10px 12px 6px; }
+:is([data-view="popup"], [data-view="overlay"]) .scale { margin: 6px 0 0; }
+:is([data-view="popup"], [data-view="overlay"]) .group { padding: 8px 12px 4px; }
+:is([data-view="popup"], [data-view="overlay"]) .group:last-of-type { padding-bottom: 8px; }
+:is([data-view="popup"], [data-view="overlay"]) .subhead { margin-top: 4px; padding-top: 10px; }
+:is([data-view="popup"], [data-view="overlay"]) .value { min-width: 70px; }
+:is([data-view="popup"], [data-view="overlay"]) .chips { gap: 6px; padding: 8px 0 2px; }
+:is([data-view="popup"], [data-view="overlay"]) .chip { height: 28px; padding: 0 6px 0 10px; }
+:is([data-view="popup"], [data-view="overlay"]) .note { margin: 2px 0 6px; }
+:is([data-view="popup"], [data-view="overlay"]) .link { padding: 2px 0; }

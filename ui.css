@@ -61,9 +61,6 @@
 .ytsp-page[hidden] { display: none; }
 .ytsp-panel svg { width: calc(20px * var(--s)); height: calc(20px * var(--s)); flex: none; }
 
-.ytsp-page.ytsp-enter { animation: ytsp-in .16s cubic-bezier(.2, .8, .2, 1); }
-@keyframes ytsp-in { from { opacity: 0; transform: translateX(calc(12px * var(--s))); } }
-@media (prefers-reduced-motion: reduce) { .ytsp-page.ytsp-enter { animation: none; } }
 
 .ytsp-header {
   position: sticky;
@@ -77,7 +74,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, .2);
   background: rgba(0, 0, 0, .35);
 }
-.ytsp-header:has(.ytsp-back) { padding-left: calc(4px * var(--s)); }
 .ytsp-title { flex: 1; font-size: calc(12px * var(--s)); font-weight: 500; }
 
 /* Round buttons: −, +, back, settings */
@@ -99,8 +95,7 @@
 .ytsp-round:hover { background: rgba(255, 255, 255, .2); }
 .ytsp-round:active { background: rgba(255, 255, 255, .28); }
 .ytsp-round:disabled { opacity: .35; cursor: default; background: rgba(255, 255, 255, .1); }
-.ytsp-header-btn,
-.ytsp-back { background: transparent; }
+.ytsp-header-btn { background: transparent; }
 .ytsp-header-btn { color: rgba(255, 255, 255, .85); }
 
 /* Main page */
@@ -161,50 +156,36 @@
 .ytsp-chip:disabled { opacity: .35; cursor: default; background: rgba(255, 255, 255, .1); }
 .ytsp-chip svg { width: calc(14px * var(--s)); height: calc(14px * var(--s)); }
 
-/* Settings page */
-.ytsp-list { padding: calc(4px * var(--s)) 0 calc(8px * var(--s)); }
-.ytsp-row {
+.ytsp-panel button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+/* Full settings over the page: the extension's own settings in an iframe */
+.ytsp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: calc(12px * var(--s));
-  min-height: calc(48px * var(--s));
-  padding: 0 calc(12px * var(--s)) 0 calc(16px * var(--s));
+  justify-content: center;
+  background: rgba(0, 0, 0, .5);
+  animation: ytsp-fade .15s ease-out;
 }
-.ytsp-row-stack { flex-direction: column; align-items: stretch; gap: calc(8px * var(--s)); padding-top: calc(10px * var(--s)); padding-bottom: calc(6px * var(--s)); }
-.ytsp-row-foot { min-height: calc(44px * var(--s)); }
-.ytsp-row-label { font-size: calc(14px * var(--s)); }
-.ytsp-stepper { display: inline-flex; align-items: center; gap: calc(6px * var(--s)); }
-.ytsp-round.ytsp-small { width: calc(28px * var(--s)); height: calc(28px * var(--s)); }
-.ytsp-round.ytsp-small svg { width: calc(16px * var(--s)); height: calc(16px * var(--s)); }
-.ytsp-row-value {
-  min-width: calc(48px * var(--s));
-  text-align: center;
-  font-weight: 500;
+.ytsp-overlay[hidden] { display: none; }
+.ytsp-dialog {
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
 }
-.ytsp-edit-chips { display: flex; flex-wrap: wrap; gap: calc(8px * var(--s)); }
-.ytsp-chip-edit svg { opacity: .7; }
-.ytsp-chip-edit:hover svg { opacity: 1; }
-.ytsp-chip-add { background: transparent; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
-.ytsp-chip[hidden] { display: none; }
-.ytsp-summary {
-  margin: 0;
-  padding: calc(10px * var(--s)) calc(16px * var(--s)) calc(6px * var(--s));
-  color: rgba(255, 255, 255, .7);
-  font-size: calc(12px * var(--s));
-  line-height: 1.4;
+.ytsp-frame {
+  display: block;
+  width: 100%;
+  height: 560px;
+  max-height: calc(100vh - 48px);
+  border: 0;
 }
-
-.ytsp-text-btn {
-  all: unset;
-  cursor: pointer;
-  padding: calc(6px * var(--s)) 0;
-  color: rgba(255, 255, 255, .7);
-  font-size: calc(13px * var(--s));
-}
-.ytsp-text-btn:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-
-.ytsp-panel button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+@keyframes ytsp-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ytsp-overlay { animation: none; } }
 
 /* First-run hint, pointing at the speed button. Fades with YouTube's controls. */
 .ytsp-hint {

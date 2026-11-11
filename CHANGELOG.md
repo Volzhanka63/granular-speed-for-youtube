@@ -8,11 +8,11 @@
 - The player panel is rebuilt to YouTube's own menu measurements (330px wide, 48px rows, 32px round controls), so it reads as part of the player. It scales up in large fullscreen like YouTube's menus.
 - The speed button uses the same font, weight and shadow as the player's time display, and the player writes speeds YouTube's way: "1.5x".
 - Hotkey feedback is a short bubble at the top centre of the video, where YouTube shows its own. It appears on Shorts even while the controls are hidden.
-- The settings page is redesigned: −/+ steppers with typeable values, one readable text size, a live scale of every speed you'll step through with a draggable switch point, and presets you can remove or add. It follows the light or dark theme.
+- The settings page is redesigned: −/+ steppers with typeable values, one readable text size, a live scale of every speed you'll step through with a draggable switch point, and presets you can remove or add. It follows the light or dark theme, and the toolbar popup fits Firefox's 600px popup height without scrolling.
 
 **Added**
 
-- Settings inside the player: the tune icon in the panel opens a settings page in the same panel, with a back arrow. No more trip to `about:addons`.
+- Full settings without leaving the video: the tune icon in the player panel opens the settings in a popup over the page, in fullscreen too. Esc or a click outside closes it.
 - A welcome page on first install, with a live demo of the keys and a one-minute explainer. The settings page links to it as "Quick guide".
 - A one-time hint pointing at the speed button the first time you see it.
 

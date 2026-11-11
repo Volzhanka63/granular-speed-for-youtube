@@ -5,6 +5,13 @@
   const fmt = (x) => x + '×';
   const NS = 'http://www.w3.org/2000/svg';
 
+  // Where this page is shown: 'popup' (toolbar), 'overlay' (popup over YouTube,
+  // opened from the player panel) or 'page' (about:addons). The first two are
+  // compact so everything fits without scrolling.
+  const view = new URLSearchParams(location.search).get('view') || 'page';
+  document.documentElement.dataset.view = view;
+  const compact = view !== 'page';
+
   let cfg = GS.normalize();
   let statusTimer;
   const rows = {};
@@ -118,12 +125,10 @@
       empty.textContent = 'No presets. The player panel hides the preset row.';
       box.append(empty);
     }
+    // At the limit, the Add field gives way to a short note in the same spot.
     const full = cfg.presets.length >= GS.LIMITS.presets;
-    $('addInput').disabled = full;
-    $('addForm').querySelector('button').disabled = full;
-    $('presetNote').textContent = full
-      ? 'That’s the maximum of 8. Remove one to add another.'
-      : 'Presets show as one-click buttons in the player panel.';
+    $('addForm').hidden = full;
+    $('presetNote').hidden = !full;
   }
 
   $('addForm').addEventListener('submit', (e) => {
@@ -150,14 +155,14 @@
   function drawScale(s) {
     // Draw at the real pixel width so ticks and labels render 1:1.
     const W = Math.max(240, Math.round(scale.getBoundingClientRect().width) || 320);
-    const H = 78;
+    const H = compact ? 60 : 78;
     scale.setAttribute('viewBox', `0 0 ${W} ${H}`);
     scale.textContent = '';
     const pad = 16;
     const span = s.max - s.min;
     const x = (v) => pad + ((v - s.min) / span) * (W - 2 * pad);
     const list = GS.speeds(s);
-    const base = 46;
+    const base = compact ? 40 : 46;
     const len = (v) => {
       if (Number.isInteger(v) || v === s.min || v === s.max) return 22;
       if (Number.isInteger(v * 2)) return 15;
@@ -175,7 +180,7 @@
     for (const p of s.presets) svgEl('circle', { class: 'preset', cx: x(p), cy: base - 28, r: 3 }, scale);
 
     // labels: ends, 1×, then whole speeds as room allows; never on top of the marker
-    const labelY = base + 19;
+    const labelY = base + (compact ? 17 : 19);
     const wanted = [s.min, s.max];
     if (s.min < 1 && 1 < s.max) wanted.push(1);
     const every = span <= 5 ? 1 : span <= 10 ? 2 : 4;
@@ -198,7 +203,6 @@
     const t = svgEl('text', { class: 'mlabel', x: mx, y: base - 36, 'text-anchor': 'middle' }, g);
     t.textContent = fmt(s.threshold);
 
-    $('count').textContent = list.length + ' speeds';
     scale.dataset.min = s.min;
     scale.dataset.max = s.max;
     scale.dataset.pad = pad;
@@ -269,6 +273,18 @@
   }
 
   $('reset').addEventListener('click', () => save(GS.normalize(), 'Defaults restored'));
+
+  // Shown over YouTube: tell the player script our height, and let it close us.
+  if (view === 'overlay') {
+    const close = () => parent.postMessage({ ytsp: 'close' }, '*');
+    const btn = $('close');
+    btn.hidden = false;
+    btn.append(icon(CLOSE));
+    btn.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    new ResizeObserver(() => parent.postMessage({ ytsp: 'size', h: document.documentElement.scrollHeight }, '*'))
+      .observe(document.body);
+  }
 
   buildRows();
   // Redraw when the page width changes (popup vs about:addons, window resize).

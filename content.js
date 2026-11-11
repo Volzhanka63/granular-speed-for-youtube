@@ -9,12 +9,11 @@
   let last = 1; // last non-1x speed, for the toggle key
   let player; // the .html5-video-player we're attached to (watch page or Shorts)
   let bezel, bezelTimer, lastWheel = 0;
-  let btn, panel, mainPage, setPage;
+  let btn, panel, mainPage;
   let slider, display, presetsEl, presetEls = [];
-  let rows = {}, editChips, addChip;
   let hint, hintDone = true; // one-time pointer to the speed button; true until storage says otherwise
   let hintObserver;
-  let summary;
+  let overlay, frame; // full settings, shown over the page
 
   const clamp = (x) => GS.r2(Math.min(cfg.max, Math.max(cfg.min, x)));
   const fmt = (x) => x + 'x'; // YouTube's own convention inside the player ("1.5x")
@@ -73,10 +72,8 @@
   }
   const ICONS = {
     tune: () => icon('M4 7h9M19 7h1M4 17h3M13 17h7', [[16, 7, 2.5], [10, 17, 2.5]]),
-    back: () => icon('M15 18l-6-6 6-6'),
     minus: () => icon('M6 12h12'),
     plus: () => icon('M12 6v12M6 12h12'),
-    close: () => icon('M7 7l10 10M17 7L7 17'),
   };
 
   // Speed bubble at the top centre of the video, where YouTube shows its own.
@@ -99,10 +96,6 @@
     browser.storage.local.set({ want, last });
   }
 
-  function saveSettings(s) {
-    browser.storage.local.set({ settings: s }); // onChanged applies it here and in every tab
-  }
-
   function applySettings(raw) {
     cfg = GS.normalize(raw);
     SPEEDS = GS.speeds(cfg);
@@ -111,7 +104,6 @@
     if (panel) {
       slider.max = SPEEDS.length - 1;
       buildPresets();
-      renderSettings();
     }
     applyAll();
     render();
@@ -166,7 +158,7 @@
     const title = el('span', 'ytsp-title', 'Playback speed');
     title.setAttribute('role', 'heading');
     title.setAttribute('aria-level', '2');
-    head.append(title, roundBtn('ytsp-header-btn', 'Speed settings', ICONS.tune, () => showPage(setPage)));
+    head.append(title, roundBtn('ytsp-header-btn', 'All settings', ICONS.tune, openSettings));
 
     const body = el('div', 'ytsp-body');
     display = el('div', 'ytsp-display');
@@ -191,97 +183,6 @@
     mainPage.append(head, body);
   }
 
-  function buildSettingsPage() {
-    setPage = el('div', 'ytsp-page');
-    setPage.hidden = true;
-    const head = el('div', 'ytsp-header');
-    const title = el('span', 'ytsp-title', 'Speed settings');
-    title.setAttribute('role', 'heading');
-    title.setAttribute('aria-level', '2');
-    head.append(roundBtn('ytsp-back', 'Back to playback speed', ICONS.back, () => showPage(mainPage)), title);
-
-    const list = el('div', 'ytsp-list');
-    summary = el('p', 'ytsp-summary');
-    summary.setAttribute('aria-live', 'polite');
-    list.append(summary);
-    for (const f of GS.FIELDS) {
-      const row = el('div', 'ytsp-row');
-      const label = el('span', 'ytsp-row-label');
-      const value = el('span', 'ytsp-row-value');
-      const minus = roundBtn('ytsp-small', 'Decrease', ICONS.minus, () => saveSettings(GS.nudge(cfg, f.key, -1)));
-      const plus = roundBtn('ytsp-small', 'Increase', ICONS.plus, () => saveSettings(GS.nudge(cfg, f.key, 1)));
-      const stepper = el('span', 'ytsp-stepper');
-      stepper.append(minus, value, plus);
-      row.append(label, stepper);
-      list.append(row);
-      rows[f.key] = { f, label, value, minus, plus };
-    }
-
-    const presetsRow = el('div', 'ytsp-row ytsp-row-stack');
-    presetsRow.append(el('span', 'ytsp-row-label', 'Presets'));
-    editChips = el('div', 'ytsp-edit-chips');
-    presetsRow.append(editChips);
-    list.append(presetsRow);
-
-    const reset = el('button', 'ytsp-text-btn', 'Reset to defaults');
-    reset.type = 'button';
-    reset.addEventListener('click', () => saveSettings(GS.normalize()));
-    const foot = el('div', 'ytsp-row ytsp-row-foot');
-    foot.append(reset);
-    list.append(foot);
-
-    setPage.append(head, list);
-  }
-
-  function renderSettings() {
-    if (!setPage) return;
-    for (const key in rows) {
-      const r = rows[key];
-      r.label.textContent = r.f.label(cfg, fmt);
-      r.value.textContent = fmt(cfg[key]);
-      r.minus.disabled = !GS.canNudge(cfg, key, -1);
-      r.plus.disabled = !GS.canNudge(cfg, key, 1);
-      r.minus.setAttribute('aria-label', 'Decrease ' + r.label.textContent.toLowerCase());
-      r.plus.setAttribute('aria-label', 'Increase ' + r.label.textContent.toLowerCase());
-    }
-    editChips.textContent = '';
-    for (const p of cfg.presets) {
-      const chip = el('button', 'ytsp-chip ytsp-chip-edit');
-      chip.type = 'button';
-      chip.setAttribute('aria-label', 'Remove preset ' + fmt(p));
-      chip.append(el('span', null, fmt(p)), ICONS.close());
-      chip.addEventListener('click', () => saveSettings(GS.withoutPreset(cfg, p)));
-      editChips.append(chip);
-    }
-    addChip = el('button', 'ytsp-chip ytsp-chip-add');
-    addChip.type = 'button';
-    addChip.append(ICONS.plus(), el('span', null, 'Add ' + fmt(want)));
-    addChip.addEventListener('click', () => saveSettings(GS.withPreset(cfg, want)));
-    editChips.append(addChip);
-    renderAddChip();
-    const list = GS.speeds(cfg);
-    summary.textContent = list.length + ' speeds from ' + fmt(cfg.min) + ' to ' + fmt(cfg.max) +
-      '. ' + fmt(cfg.stepLow) + ' steps up to ' + fmt(cfg.threshold) + ', then ' + fmt(cfg.stepHigh) + '.';
-  }
-
-  // Only offered when it would do something: the current speed isn't a preset yet and there's room.
-  function renderAddChip() {
-    if (!addChip) return;
-    addChip.hidden = cfg.presets.includes(want) || cfg.presets.length >= GS.LIMITS.presets;
-    addChip.lastChild.textContent = 'Add ' + fmt(want);
-    addChip.setAttribute('aria-label', 'Add current speed ' + fmt(want) + ' as a preset');
-  }
-
-  function showPage(page) {
-    for (const p of [mainPage, setPage]) p.hidden = p !== page;
-    page.classList.remove('ytsp-enter');
-    void page.offsetWidth;
-    page.classList.add('ytsp-enter');
-    const first = page.querySelector('button:not(:disabled)');
-    if (first && panel.contains(document.activeElement)) first.focus();
-    fitPanel();
-  }
-
   function buildUI() {
     btn = el('button', 'ytsp-btn');
     btn.type = 'button';
@@ -298,9 +199,8 @@
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-label', 'Playback speed');
     buildMainPage();
-    buildSettingsPage();
     buildPresets();
-    panel.append(mainPage, setPage);
+    panel.append(mainPage);
     mainPage.addEventListener('wheel', onWheel, { passive: false });
     stopAll(panel);
   }
@@ -413,7 +313,6 @@
       b.setAttribute('aria-pressed', on);
     });
     positionHint();
-    renderAddChip();
   }
 
   function outside(e) {
@@ -443,9 +342,8 @@
 
   function openPanel() {
     dismissHint();
-    renderSettings();
     panel.hidden = false;
-    showPage(mainPage);
+    fitPanel();
     document.addEventListener('pointerdown', outside, true);
   }
 
@@ -454,6 +352,46 @@
     panel.hidden = true;
     document.removeEventListener('pointerdown', outside, true);
   }
+
+  // ---- Full settings, over the page ----
+
+  // The same page as the toolbar popup, in an iframe. It goes inside the
+  // fullscreen element when there is one, so it also works in fullscreen.
+  const EXT_ORIGIN = new URL(browser.runtime.getURL('')).origin;
+
+  function openSettings() {
+    closePanel();
+    if (!overlay) {
+      overlay = el('div', 'ytsp-overlay');
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-label', 'Granular Speed settings');
+      const box = el('div', 'ytsp-dialog');
+      frame = el('iframe', 'ytsp-frame');
+      frame.title = 'Granular Speed settings';
+      box.append(frame);
+      overlay.append(box);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSettings(); });
+      stopAll(overlay);
+    }
+    frame.src = browser.runtime.getURL('options.html?view=overlay');
+    (document.fullscreenElement || document.body).append(overlay);
+    overlay.hidden = false;
+    frame.focus();
+  }
+
+  function closeSettings() {
+    if (!overlay || overlay.hidden) return;
+    overlay.hidden = true;
+    frame.src = 'about:blank';
+    if (btn) btn.focus();
+  }
+
+  window.addEventListener('message', (e) => {
+    if (!frame || e.source !== frame.contentWindow || e.origin !== EXT_ORIGIN) return;
+    const d = e.data || {};
+    if (d.ytsp === 'close') closeSettings();
+    if (d.ytsp === 'size' && Number.isFinite(d.h)) frame.style.height = Math.min(d.h, innerHeight - 48) + 'px';
+  });
 
   // ---- Keep the speed applied ----
 
@@ -476,6 +414,7 @@
   // Capture on window runs before YouTube's own key handlers.
   window.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.code === 'Escape' && overlay && !overlay.hidden) { closeSettings(); return; }
     if (e.code === 'Escape' && panel && !panel.hidden) closePanel();
     const t = e.composedPath()[0]; // real target, even inside shadow DOM
     const inPanel = panel && t && t.nodeType === 1 && panel.contains(t);
