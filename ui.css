@@ -1,4 +1,12 @@
-/* Speed button in the player's right controls */
+/*
+ * In-player UI. Numbers use proportional figures like the rest of the player.
+ * Measurements follow YouTube's own settings menu and its
+ * playback-speed submenu (330px wide, 40px header, 48px rows, 32px round
+ * buttons and chips, 60% black, 12px corners). --s scales everything up in
+ * YouTube's big mode (large fullscreen).
+ */
+
+/* Button in the watch player's control bar */
 .ytsp-btn.ytp-button {
   width: auto;
   min-width: 48px;
@@ -8,123 +16,266 @@
   justify-content: center;
   vertical-align: top;
   color: #fff;
-  font: 500 14px/1 "YouTube Sans", Roboto, Arial, sans-serif;
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+  font: 500 14px/1 "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
+  text-shadow: 0 0 2px #000; /* same face, weight, size and shadow as the time display */
 }
 
-/* Shorts: no control bar, so the button floats as a pill at the top of the video */
-.ytsp-btn.ytsp-float {
+/* Button inside Shorts' top-right group, next to CC */
+.ytsp-btn.ytsp-btn-shorts {
   all: unset;
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 72;
   box-sizing: border-box;
-  height: 36px;
-  min-width: 64px;
-  padding: 0 14px 0 10px;
-  border-radius: 18px;
+  height: 48px;
+  min-width: 48px;
+  padding: 0 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  background: rgba(0, 0, 0, .6);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35), 0 1px 4px rgba(0, 0, 0, .3);
+  border-radius: 24px;
   color: #fff;
-  font: 600 15px/1 "YouTube Sans", Roboto, Arial, sans-serif;
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+  font: 500 14px/1 "YouTube Noto", Roboto, Arial, sans-serif;
   cursor: pointer;
-  transition: background .15s;
+  pointer-events: auto; /* Shorts' control group sets none and re-enables only its own buttons */
 }
-.ytsp-gauge { display: none; flex: none; }
-.ytsp-float .ytsp-gauge { display: block; }
-.ytsp-btn.ytsp-float:hover { background: rgba(0, 0, 0, .8); }
-.ytsp-btn.ytsp-float:focus-visible { outline: 2px solid #fff; }
-.ytsp-btn.ytsp-pulse { animation: ytsp-pulse .4s ease-out; }
-@keyframes ytsp-pulse {
-  40% { transform: translateX(-50%) scale(1.18); background: rgba(0, 0, 0, .85); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ytsp-btn.ytsp-pulse { animation: none; background: rgba(0, 0, 0, .85); }
-}
+.ytsp-btn.ytsp-btn-shorts:hover { background: rgba(255, 255, 255, .1); }
+.ytsp-btn.ytsp-btn-shorts:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
 
-/* Panel, styled after YouTube's settings menu */
+/* Panel */
 .ytsp-panel {
+  --s: 1;
   position: absolute;
   z-index: 72;
-  width: 248px;
+  width: calc(330px * var(--s));
   box-sizing: border-box;
-  padding: 12px 14px 14px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  background: rgba(0, 0, 0, .6);
+  border-radius: calc(12px * var(--s));
+  color: #eee;
+  font: 400 calc(14px * var(--s))/1.25 "YouTube Noto", Roboto, Arial, sans-serif;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, .3) transparent;
+}
+.ytp-big-mode .ytsp-panel { --s: 1.35; }
+.ytsp-panel[hidden],
+.ytsp-page[hidden] { display: none; }
+.ytsp-panel svg { width: calc(20px * var(--s)); height: calc(20px * var(--s)); flex: none; }
+
+.ytsp-page.ytsp-enter { animation: ytsp-in .16s cubic-bezier(.2, .8, .2, 1); }
+@keyframes ytsp-in { from { opacity: 0; transform: translateX(calc(12px * var(--s))); } }
+@media (prefers-reduced-motion: reduce) { .ytsp-page.ytsp-enter { animation: none; } }
+
+.ytsp-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: calc(4px * var(--s));
+  height: calc(40px * var(--s));
+  padding: 0 calc(8px * var(--s)) 0 calc(16px * var(--s));
+  border-bottom: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(0, 0, 0, .35);
+}
+.ytsp-header:has(.ytsp-back) { padding-left: calc(4px * var(--s)); }
+.ytsp-title { flex: 1; font-size: calc(12px * var(--s)); font-weight: 500; }
+
+/* Round buttons: −, +, back, settings */
+.ytsp-round {
+  all: unset;
+  box-sizing: border-box;
+  flex: none;
+  width: calc(32px * var(--s));
+  height: calc(32px * var(--s));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  cursor: pointer;
+  transition: background .12s;
+}
+.ytsp-round:hover { background: rgba(255, 255, 255, .2); }
+.ytsp-round:active { background: rgba(255, 255, 255, .28); }
+.ytsp-round:disabled { opacity: .35; cursor: default; background: rgba(255, 255, 255, .1); }
+.ytsp-header-btn,
+.ytsp-back { background: transparent; }
+.ytsp-header-btn { color: rgba(255, 255, 255, .85); }
+
+/* Main page */
+.ytsp-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background: rgba(28, 28, 28, .92);
-  border-radius: 12px;
-  color: #eee;
-  font: 400 13px/1.2 "YouTube Sans", Roboto, Arial, sans-serif;
-  text-shadow: none;
-  transition: opacity .1s;
+  gap: calc(16px * var(--s));
+  padding: calc(24px * var(--s)) calc(16px * var(--s)) calc(16px * var(--s));
 }
-.ytsp-panel[hidden] { display: none; }
-.ytp-autohide .ytsp-panel:not(.ytsp-float) { opacity: 0; pointer-events: none; }
-
-.ytsp-head { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; }
-.ytsp-value { margin-left: auto; font-variant-numeric: tabular-nums; }
-.ytsp-gear {
-  all: unset;
-  display: inline-flex;
-  padding: 3px;
-  margin: -3px -4px -3px 0;
-  border-radius: 6px;
-  color: #aaa;
+.ytsp-display {
+  text-align: center;
+  font-size: calc(18px * var(--s));
+  font-weight: 900;
+}
+.ytsp-slider-row { display: flex; align-items: center; gap: calc(12px * var(--s)); }
+.ytsp-slider {
+  flex: 1;
+  min-width: 0;
+  height: calc(24px * var(--s));
+  margin: 0;
+  background: transparent;
   cursor: pointer;
 }
-.ytsp-gear:hover { color: #fff; background: rgba(255, 255, 255, .1); }
-.ytsp-gear:focus-visible { outline: 2px solid #fff; }
-
-.ytsp-row { display: flex; align-items: center; gap: 10px; }
-.ytsp-slider { flex: 1; min-width: 0; margin: 0; accent-color: #f03; cursor: pointer; }
-
-.ytsp-presets { display: grid; grid-template-columns: repeat(var(--cols, 6), 1fr); gap: 6px; }
+.ytsp-slider::-moz-range-track { height: calc(4px * var(--s)); border-radius: 2px; background: rgba(255, 255, 255, .3); }
+.ytsp-slider::-moz-range-progress { height: calc(4px * var(--s)); border-radius: 2px; background: #fff; }
+.ytsp-slider::-moz-range-thumb {
+  width: calc(14px * var(--s));
+  height: calc(14px * var(--s));
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+}
+.ytsp-slider:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 4px; }
+.ytsp-presets { display: grid; grid-template-columns: repeat(var(--cols, 6), 1fr); gap: calc(8px * var(--s)); }
 .ytsp-presets[hidden] { display: none; }
 
-.ytsp-step,
-.ytsp-preset {
+.ytsp-chip {
   all: unset;
   box-sizing: border-box;
-  cursor: pointer;
-  text-align: center;
+  height: calc(32px * var(--s));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(4px * var(--s));
+  padding: 0 calc(10px * var(--s));
+  border-radius: calc(16px * var(--s));
   background: rgba(255, 255, 255, .1);
-  font-variant-numeric: tabular-nums;
-}
-.ytsp-step {
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
-  border-radius: 50%;
-  font-size: 18px;
-}
-.ytsp-preset { padding: 6px 0; border-radius: 8px; }
-.ytsp-step:hover,
-.ytsp-preset:hover { background: rgba(255, 255, 255, .2); }
-.ytsp-preset.ytsp-on { background: #fff; color: #0f0f0f; font-weight: 500; }
-.ytsp-step:focus-visible,
-.ytsp-preset:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
-
-/* Speed flash on hotkey */
-.ytsp-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 72;
-  padding: 4px 10px;
-  background: rgba(0, 0, 0, .7);
   color: #fff;
-  font: 600 18px/1.3 sans-serif;
+  font-size: calc(12px * var(--s));
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .12s;
+}
+.ytsp-chip:hover { background: rgba(255, 255, 255, .2); }
+.ytsp-chip.ytsp-on { background: #fff; color: #0f0f0f; text-shadow: none; }
+.ytsp-chip:disabled { opacity: .35; cursor: default; background: rgba(255, 255, 255, .1); }
+.ytsp-chip svg { width: calc(14px * var(--s)); height: calc(14px * var(--s)); }
+
+/* Settings page */
+.ytsp-list { padding: calc(4px * var(--s)) 0 calc(8px * var(--s)); }
+.ytsp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12px * var(--s));
+  min-height: calc(48px * var(--s));
+  padding: 0 calc(12px * var(--s)) 0 calc(16px * var(--s));
+}
+.ytsp-row-stack { flex-direction: column; align-items: stretch; gap: calc(8px * var(--s)); padding-top: calc(10px * var(--s)); padding-bottom: calc(6px * var(--s)); }
+.ytsp-row-foot { min-height: calc(44px * var(--s)); }
+.ytsp-row-label { font-size: calc(14px * var(--s)); }
+.ytsp-stepper { display: inline-flex; align-items: center; gap: calc(6px * var(--s)); }
+.ytsp-round.ytsp-small { width: calc(28px * var(--s)); height: calc(28px * var(--s)); }
+.ytsp-round.ytsp-small svg { width: calc(16px * var(--s)); height: calc(16px * var(--s)); }
+.ytsp-row-value {
+  min-width: calc(48px * var(--s));
+  text-align: center;
+  font-weight: 500;
+}
+.ytsp-edit-chips { display: flex; flex-wrap: wrap; gap: calc(8px * var(--s)); }
+.ytsp-chip-edit svg { opacity: .7; }
+.ytsp-chip-edit:hover svg { opacity: 1; }
+.ytsp-chip-add { background: transparent; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
+.ytsp-chip[hidden] { display: none; }
+.ytsp-summary {
+  margin: 0;
+  padding: calc(10px * var(--s)) calc(16px * var(--s)) calc(6px * var(--s));
+  color: rgba(255, 255, 255, .7);
+  font-size: calc(12px * var(--s));
+  line-height: 1.4;
+}
+
+.ytsp-text-btn {
+  all: unset;
+  cursor: pointer;
+  padding: calc(6px * var(--s)) 0;
+  color: rgba(255, 255, 255, .7);
+  font-size: calc(13px * var(--s));
+}
+.ytsp-text-btn:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+.ytsp-panel button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+/* First-run hint, pointing at the speed button. Fades with YouTube's controls. */
+.ytsp-hint {
+  position: absolute;
+  right: 12px;
+  z-index: 73;
+  width: 264px;
+  box-sizing: border-box;
+  padding: 12px 14px 10px;
+  border-radius: 12px;
+  background: rgba(28, 28, 28, .95);
+  color: #eee;
+  font: 400 13px/1.4 "YouTube Noto", Roboto, Arial, sans-serif;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .35);
+  display: flex;
+  flex-direction: column;
+  transition: opacity .2s;
+}
+.ytsp-hint::after {
+  content: "";
+  position: absolute;
+  right: var(--arrow, 24px);
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.ytp-autohide .ytsp-hint { opacity: 0; pointer-events: none; }
+.ytsp-hint strong { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500; color: #fff; }
+.ytsp-hint p { margin: 0 0 8px; color: rgba(255, 255, 255, .8); }
+.ytsp-hint-keys { white-space: pre; }
+.ytsp-hint kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 1px 6px;
   border-radius: 4px;
+  background: rgba(255, 255, 255, .16);
+  color: #fff;
+  font: 500 12px/18px "YouTube Noto", Roboto, Arial, sans-serif;
+  text-align: center;
+}
+.ytsp-hint-btn {
+  all: unset;
+  align-self: flex-end;
+  padding: 6px 12px;
+  border-radius: 16px;
+  background: #fff;
+  color: #0f0f0f;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ytsp-hint-btn:hover { background: #e6e6e6; }
+.ytsp-hint-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Hotkey feedback, in the spot where YouTube shows its own speed bubble */
+.ytsp-bezel {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 72;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .6);
+  color: #fff;
+  font: 500 18px/1.2 "YouTube Noto", Roboto, Arial, sans-serif;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .5);
   pointer-events: none;
 }
-.ytsp-badge[hidden] { display: none; }
+.ytp-big-mode .ytsp-bezel { font-size: 24px; padding: 10px 18px; }
+.ytsp-bezel[hidden] { display: none; }

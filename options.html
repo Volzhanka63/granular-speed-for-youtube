@@ -7,60 +7,52 @@
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <main>
-    <header>
-      <img src="icons/48.png" alt="" width="28" height="28">
+  <main class="app">
+    <header class="top">
+      <img src="icons/48.png" alt="" width="24" height="24">
       <h1>Granular Speed</h1>
       <span id="status" class="status" role="status"></span>
     </header>
 
-    <section>
-      <h2>Steps</h2>
-      <label class="field">
-        <span id="lowLabel">Step below 2×</span>
-        <span class="num"><input id="stepLow" type="number" min="0.01" max="4" step="0.01"><i>×</i></span>
-      </label>
-      <label class="field">
-        <span>Step size changes at</span>
-        <span class="num"><input id="threshold" type="number" min="0.1" max="16" step="0.05"><i>×</i></span>
-      </label>
-      <label class="field">
-        <span id="highLabel">Step above 2×</span>
-        <span class="num"><input id="stepHigh" type="number" min="0.01" max="4" step="0.01"><i>×</i></span>
-      </label>
+    <section class="scale-card" aria-labelledby="scaleTitle">
+      <div class="scale-head">
+        <h2 id="scaleTitle">Speeds you step through</h2>
+        <span id="count" class="count"></span>
+      </div>
+      <svg id="scale" class="scale" role="group" aria-labelledby="scaleTitle"></svg>
+      <p class="hint">Drag the marker to change where the step size switches. Circles mark your presets.</p>
     </section>
 
-    <section>
-      <h2>Range</h2>
-      <label class="field">
-        <span>Slowest</span>
-        <span class="num"><input id="min" type="number" min="0.1" max="15.9" step="0.05"><i>×</i></span>
-      </label>
-      <label class="field">
-        <span>Fastest</span>
-        <span class="num"><input id="max" type="number" min="0.2" max="16" step="0.25"><i>×</i></span>
-      </label>
+    <section class="group" aria-labelledby="stepsTitle">
+      <h2 id="stepsTitle">Steps</h2>
+      <div id="stepRows" class="rows"></div>
+    </section>
+
+    <section class="group" aria-labelledby="rangeTitle">
+      <h2 id="rangeTitle">Range</h2>
+      <div id="rangeRows" class="rows"></div>
       <p id="audioNote" class="note" hidden>
         Firefox mutes audio above 8×. To keep the sound, raise
         <code>media.audio.playbackrate.muting_threshold</code> in about:config.
       </p>
     </section>
 
-    <section>
-      <h2>Presets</h2>
-      <label class="field stack">
-        <span>Buttons in the player panel, up to 8</span>
-        <input id="presets" type="text" spellcheck="false" placeholder="1, 1.5, 2, 2.5, 3, 4">
-      </label>
+    <section class="group" aria-labelledby="presetsTitle">
+      <h2 id="presetsTitle">Presets</h2>
+      <div id="chips" class="chips"></div>
+      <form id="addForm" class="add">
+        <label for="addInput">Add a speed</label>
+        <span class="add-field">
+          <input id="addInput" type="number" inputmode="decimal" step="0.05" min="0.1" max="16" placeholder="e.g. 2.3">
+          <button type="submit">Add</button>
+        </span>
+      </form>
+      <p id="presetNote" class="note"></p>
     </section>
 
-    <section>
-      <h2><span>Speeds you'll step through</span><span id="count" class="count"></span></h2>
-      <div id="preview" class="preview" aria-live="polite"></div>
-    </section>
-
-    <footer>
-      <button id="reset" type="button">Reset to defaults</button>
+    <footer class="foot">
+      <a class="link" href="welcome.html" target="_blank">Quick guide</a>
+      <button id="reset" type="button" class="link">Reset to defaults</button>
     </footer>
   </main>
   <script src="shared.js"></script>

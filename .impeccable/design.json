@@ -1,0 +1,830 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T19:50:51+00:00",
+  "title": "Design System: Granular Speed for YouTube",
+  "extensions": {
+    "colorMeta": {
+      "amber": {
+        "role": "primary",
+        "displayName": "Gauge Amber",
+        "canonical": "#ffb020",
+        "tonalRamp": [
+          "#1a0500",
+          "#431600",
+          "#712a00",
+          "#954d00",
+          "#ba6f00",
+          "#e09300",
+          "#ffb837",
+          "#ffe499"
+        ]
+      },
+      "amber-ink": {
+        "role": "primary",
+        "displayName": "Amber Ink",
+        "canonical": "#1d1404",
+        "tonalRamp": [
+          "#0e0b06",
+          "#2b2418",
+          "#4b402e",
+          "#6b604c",
+          "#8c816d",
+          "#afa38f",
+          "#d4c8b3",
+          "#f6eddf"
+        ]
+      },
+      "amber-text-light": {
+        "role": "primary",
+        "displayName": "Burnt Amber Text",
+        "canonical": "#8a5300",
+        "tonalRamp": [
+          "#170700",
+          "#3d1b00",
+          "#673300",
+          "#8a5300",
+          "#ae7431",
+          "#d39756",
+          "#f8bc7c",
+          "#ffe6bb"
+        ]
+      },
+      "amber-text-dark": {
+        "role": "primary",
+        "displayName": "Pale Amber Text",
+        "canonical": "#ffc24f",
+        "tonalRamp": [
+          "#170700",
+          "#3e1b00",
+          "#683300",
+          "#8b5400",
+          "#af7600",
+          "#d49912",
+          "#f9be50",
+          "#ffe8a3"
+        ]
+      },
+      "amber-focus-light": {
+        "role": "primary",
+        "displayName": "Deep Amber Focus",
+        "canonical": "#e89a00",
+        "tonalRamp": [
+          "#1a0500",
+          "#431600",
+          "#712a00",
+          "#954c00",
+          "#ba6f00",
+          "#e09200",
+          "#ffb844",
+          "#ffe49e"
+        ]
+      },
+      "amber-fine-light": {
+        "role": "primary",
+        "displayName": "Deep Amber Fine Tick",
+        "canonical": "#d48700",
+        "tonalRamp": [
+          "#1a0500",
+          "#431600",
+          "#712a00",
+          "#954c00",
+          "#ba6e00",
+          "#e0921e",
+          "#ffb754",
+          "#ffe3a5"
+        ]
+      },
+      "cool-grey-bg": {
+        "role": "neutral",
+        "displayName": "Cool Grey Page",
+        "canonical": "#e7e8eb",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414244",
+          "#606164",
+          "#818285",
+          "#a4a5a8",
+          "#c8c9cc",
+          "#eeeef0"
+        ]
+      },
+      "white-surface": {
+        "role": "neutral",
+        "displayName": "White Card",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "cool-grey-line": {
+        "role": "neutral",
+        "displayName": "Cool Grey Rule",
+        "canonical": "#dcdee2",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#404245",
+          "#5f6165",
+          "#808286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#edeef1"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#16171a",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#414245",
+          "#606165",
+          "#818286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#edeef1"
+        ]
+      },
+      "slate-muted": {
+        "role": "neutral",
+        "displayName": "Slate Muted",
+        "canonical": "#575c66",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#22252b",
+          "#3d424c",
+          "#5c616b",
+          "#7d828d",
+          "#a0a5b0",
+          "#c4c9d4",
+          "#ebeff7"
+        ]
+      },
+      "control-light": {
+        "role": "neutral",
+        "displayName": "Control Grey",
+        "canonical": "#eff0f2",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#a4a5a7",
+          "#c8c9cb",
+          "#eeeef0"
+        ]
+      },
+      "control-light-hover": {
+        "role": "neutral",
+        "displayName": "Control Grey Hover",
+        "canonical": "#e4e6e9",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#404244",
+          "#606164",
+          "#818285",
+          "#a3a5a8",
+          "#c7c9cc",
+          "#edeef0"
+        ]
+      },
+      "control-light-active": {
+        "role": "neutral",
+        "displayName": "Control Grey Pressed",
+        "canonical": "#d9dbdf",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#404245",
+          "#5f6165",
+          "#808286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#edeef1"
+        ]
+      },
+      "tick-light": {
+        "role": "neutral",
+        "displayName": "Minor Tick (light)",
+        "canonical": "#a5a9b1",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232529",
+          "#3f4249",
+          "#5e6168",
+          "#7f828a",
+          "#a1a5ad",
+          "#c5c9d1",
+          "#eceef4"
+        ]
+      },
+      "tick-major-light": {
+        "role": "neutral",
+        "displayName": "Major Tick (light)",
+        "canonical": "#33363c",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232529",
+          "#3f4248",
+          "#5e6168",
+          "#7f8289",
+          "#a1a5ac",
+          "#c5c9d1",
+          "#eceef4"
+        ]
+      },
+      "graphite-bg": {
+        "role": "neutral",
+        "displayName": "Graphite Page",
+        "canonical": "#111214",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#414244",
+          "#606164",
+          "#818285",
+          "#a4a5a8",
+          "#c8c9cc",
+          "#edeef0"
+        ]
+      },
+      "graphite-surface": {
+        "role": "neutral",
+        "displayName": "Graphite Card",
+        "canonical": "#1b1c20",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242528",
+          "#414246",
+          "#606166",
+          "#818287",
+          "#a3a5aa",
+          "#c7c9ce",
+          "#edeef2"
+        ]
+      },
+      "graphite-line": {
+        "role": "neutral",
+        "displayName": "Graphite Rule",
+        "canonical": "#2c2e34",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242529",
+          "#404248",
+          "#5f6168",
+          "#808289",
+          "#a2a5ac",
+          "#c6c9d0",
+          "#eceef4"
+        ]
+      },
+      "frost-text": {
+        "role": "neutral",
+        "displayName": "Frost Text",
+        "canonical": "#eceef1",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#404244",
+          "#606164",
+          "#818285",
+          "#a3a5a8",
+          "#c7c9cc",
+          "#edeef0"
+        ]
+      },
+      "ash-muted": {
+        "role": "neutral",
+        "displayName": "Ash Muted",
+        "canonical": "#a1a5ae",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#23252a",
+          "#3f424a",
+          "#5e6169",
+          "#7e828b",
+          "#a1a5ae",
+          "#c5c9d2",
+          "#eceef5"
+        ]
+      },
+      "control-dark": {
+        "role": "neutral",
+        "displayName": "Graphite Control",
+        "canonical": "#26282d",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242528",
+          "#404247",
+          "#5f6167",
+          "#808288",
+          "#a2a5ab",
+          "#c6c9cf",
+          "#eceef3"
+        ]
+      },
+      "control-dark-hover": {
+        "role": "neutral",
+        "displayName": "Graphite Control Hover",
+        "canonical": "#30333a",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#23252a",
+          "#3f4249",
+          "#5e6169",
+          "#7f828a",
+          "#a1a5ae",
+          "#c5c9d2",
+          "#eceef5"
+        ]
+      },
+      "control-dark-active": {
+        "role": "neutral",
+        "displayName": "Graphite Control Pressed",
+        "canonical": "#3a3d45",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#23252a",
+          "#3f424a",
+          "#5e616a",
+          "#7f828b",
+          "#a1a5ae",
+          "#c5c9d3",
+          "#eceef5"
+        ]
+      },
+      "tick-dark": {
+        "role": "neutral",
+        "displayName": "Minor Tick (dark)",
+        "canonical": "#5b6069",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#22252b",
+          "#3d424b",
+          "#5c616a",
+          "#7d838c",
+          "#a0a5af",
+          "#c4c9d3",
+          "#ebeff6"
+        ]
+      },
+      "tick-major-dark": {
+        "role": "neutral",
+        "displayName": "Major Tick (dark)",
+        "canonical": "#d3d6db",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242528",
+          "#404246",
+          "#5f6166",
+          "#808287",
+          "#a2a5aa",
+          "#c6c9ce",
+          "#eceef2"
+        ]
+      },
+      "icon-graphite": {
+        "role": "neutral",
+        "displayName": "Icon Graphite",
+        "canonical": "#16181d",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232529",
+          "#404248",
+          "#5f6167",
+          "#808289",
+          "#a2a5ac",
+          "#c6c9d0",
+          "#eceef3"
+        ]
+      },
+      "player-panel": {
+        "role": "neutral",
+        "displayName": "Player Panel Black",
+        "canonical": "rgba(0, 0, 0, .6)",
+        "tonalRamp": [
+          "rgba(0, 0, 0, .1)",
+          "rgba(0, 0, 0, .2)",
+          "rgba(0, 0, 0, .28)",
+          "rgba(0, 0, 0, .35)",
+          "rgba(0, 0, 0, .5)",
+          "rgba(0, 0, 0, .6)",
+          "rgba(0, 0, 0, .7)",
+          "rgba(0, 0, 0, .95)"
+        ]
+      },
+      "player-header-wash": {
+        "role": "neutral",
+        "displayName": "Player Header Wash",
+        "canonical": "rgba(0, 0, 0, .35)",
+        "tonalRamp": [
+          "rgba(0, 0, 0, .1)",
+          "rgba(0, 0, 0, .2)",
+          "rgba(0, 0, 0, .28)",
+          "rgba(0, 0, 0, .35)",
+          "rgba(0, 0, 0, .5)",
+          "rgba(0, 0, 0, .6)",
+          "rgba(0, 0, 0, .7)",
+          "rgba(0, 0, 0, .95)"
+        ]
+      },
+      "player-rule": {
+        "role": "neutral",
+        "displayName": "Player Hairline",
+        "canonical": "rgba(255, 255, 255, .2)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, .1)",
+          "rgba(255, 255, 255, .2)",
+          "rgba(255, 255, 255, .28)",
+          "rgba(255, 255, 255, .35)",
+          "rgba(255, 255, 255, .5)",
+          "rgba(255, 255, 255, .6)",
+          "rgba(255, 255, 255, .7)",
+          "rgba(255, 255, 255, .95)"
+        ]
+      },
+      "player-control": {
+        "role": "neutral",
+        "displayName": "Player Control White",
+        "canonical": "rgba(255, 255, 255, .1)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, .1)",
+          "rgba(255, 255, 255, .2)",
+          "rgba(255, 255, 255, .28)",
+          "rgba(255, 255, 255, .35)",
+          "rgba(255, 255, 255, .5)",
+          "rgba(255, 255, 255, .6)",
+          "rgba(255, 255, 255, .7)",
+          "rgba(255, 255, 255, .95)"
+        ]
+      },
+      "player-control-hover": {
+        "role": "neutral",
+        "displayName": "Player Control Hover",
+        "canonical": "rgba(255, 255, 255, .2)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, .1)",
+          "rgba(255, 255, 255, .2)",
+          "rgba(255, 255, 255, .28)",
+          "rgba(255, 255, 255, .35)",
+          "rgba(255, 255, 255, .5)",
+          "rgba(255, 255, 255, .6)",
+          "rgba(255, 255, 255, .7)",
+          "rgba(255, 255, 255, .95)"
+        ]
+      },
+      "player-control-active": {
+        "role": "neutral",
+        "displayName": "Player Control Pressed",
+        "canonical": "rgba(255, 255, 255, .28)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, .1)",
+          "rgba(255, 255, 255, .2)",
+          "rgba(255, 255, 255, .28)",
+          "rgba(255, 255, 255, .35)",
+          "rgba(255, 255, 255, .5)",
+          "rgba(255, 255, 255, .6)",
+          "rgba(255, 255, 255, .7)",
+          "rgba(255, 255, 255, .95)"
+        ]
+      },
+      "player-text": {
+        "role": "neutral",
+        "displayName": "Player Text",
+        "canonical": "#eeeeee",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "player-white": {
+        "role": "neutral",
+        "displayName": "Player White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "player-secondary": {
+        "role": "neutral",
+        "displayName": "Player Secondary",
+        "canonical": "rgba(255, 255, 255, .7)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, .1)",
+          "rgba(255, 255, 255, .2)",
+          "rgba(255, 255, 255, .28)",
+          "rgba(255, 255, 255, .35)",
+          "rgba(255, 255, 255, .5)",
+          "rgba(255, 255, 255, .6)",
+          "rgba(255, 255, 255, .7)",
+          "rgba(255, 255, 255, .95)"
+        ]
+      },
+      "player-on-ink": {
+        "role": "neutral",
+        "displayName": "Player Selected Ink",
+        "canonical": "#0f0f0f",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "player-tooltip": {
+        "role": "neutral",
+        "displayName": "Player Tooltip Charcoal",
+        "canonical": "rgba(28, 28, 28, .95)",
+        "tonalRamp": [
+          "rgba(28, 28, 28, .1)",
+          "rgba(28, 28, 28, .2)",
+          "rgba(28, 28, 28, .28)",
+          "rgba(28, 28, 28, .35)",
+          "rgba(28, 28, 28, .5)",
+          "rgba(28, 28, 28, .6)",
+          "rgba(28, 28, 28, .7)",
+          "rgba(28, 28, 28, .95)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "ext-body": {
+        "displayName": "Extension Body",
+        "purpose": "Row labels and how-to text; tabular numerals page-wide."
+      },
+      "ext-section": {
+        "displayName": "Section",
+        "purpose": "Card headings, value-cell and chip numbers."
+      },
+      "ext-title": {
+        "displayName": "Title",
+        "purpose": "Product name in the page header."
+      },
+      "ext-meta": {
+        "displayName": "Meta",
+        "purpose": "Status, count, hints, notes."
+      },
+      "ext-scale-label": {
+        "displayName": "Scale Label",
+        "purpose": "Speed-scale tick labels; needle label at 650 in amber text."
+      },
+      "welcome-display": {
+        "displayName": "Welcome Display",
+        "purpose": "Welcome page headline only."
+      },
+      "welcome-lead": {
+        "displayName": "Welcome Lead",
+        "purpose": "Welcome intro paragraph, max 52ch."
+      },
+      "welcome-readout": {
+        "displayName": "Welcome Readout",
+        "purpose": "Speed number in the welcome demo."
+      },
+      "player-body": {
+        "displayName": "Player Body",
+        "purpose": "In-player row labels and panel text."
+      },
+      "player-speed-button": {
+        "displayName": "Player Speed Button",
+        "purpose": "Matches YouTube's time display."
+      },
+      "player-title": {
+        "displayName": "Player Header Title",
+        "purpose": "40px panel header title."
+      },
+      "player-chip": {
+        "displayName": "Player Chip",
+        "purpose": "Preset chips in the player panel."
+      },
+      "player-readout": {
+        "displayName": "Player Readout",
+        "purpose": "Current speed in the player panel."
+      },
+      "player-bezel": {
+        "displayName": "Player Bezel",
+        "purpose": "Hotkey feedback bubble; 24px in big mode."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-light",
+        "value": "0 1px 2px rgba(20,22,26,.06), 0 2px 8px rgba(20,22,26,.05)",
+        "purpose": "Extension cards, light theme."
+      },
+      {
+        "name": "card-dark",
+        "value": "0 1px 0 rgba(255,255,255,.03) inset, 0 2px 10px rgba(0,0,0,.35)",
+        "purpose": "Extension cards, dark theme."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 2px var(--focus)",
+        "purpose": "Focus on value cells and fields (extension)."
+      },
+      {
+        "name": "adjusted-flash",
+        "value": "0 0 0 2px #ffb020",
+        "purpose": "1.4s ring on a value the app corrected."
+      },
+      {
+        "name": "player-text",
+        "value": "0 0 2px rgba(0,0,0,.5)",
+        "purpose": "Text shadow on player panel and bezel; speed button uses 0 0 2px #000."
+      },
+      {
+        "name": "player-hint",
+        "value": "0 4px 16px rgba(0,0,0,.35)",
+        "purpose": "First-run hint bubble."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-state",
+        "value": "background .12s",
+        "purpose": "Hover/active on steppers, chips, round buttons."
+      },
+      {
+        "name": "status-fade",
+        "value": "opacity .2s",
+        "purpose": "Saved status and player hint fade."
+      },
+      {
+        "name": "adjusted",
+        "value": "1.4s ease-out",
+        "purpose": "Corrected-value amber ring."
+      },
+      {
+        "name": "player-page-enter",
+        "value": ".16s cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "Panel page slide-and-fade from 12px right; off under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "popup-min",
+        "value": "360px"
+      },
+      {
+        "name": "settings-max",
+        "value": "520px"
+      },
+      {
+        "name": "welcome-max",
+        "value": "600px"
+      },
+      {
+        "name": "player-big-mode",
+        "value": ".ytp-big-mode → --s: 1.35"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "ext-button-primary",
+      "description": "Amber pill for the single primary action on an extension page.",
+      "html": "<button class=\"ds-btn-primary\">Add</button>",
+      "css": ":host{--accent:#ffb020;--accent-ink:#1d1404;--focus:#e89a00;--ctl-bg:#eff0f2;--ctl-hover:#e4e6e9;--ctl-active:#d9dbdf;--text:#16171a;--muted:#575c66;--surface:#fff;--line:#dcdee2;--fine-zone:rgba(255,176,32,.16);--tick:#a5a9b1;--tick-major:#33363c;--marker:#e89a00;--accent-text:#8a5300;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif} .ds-btn-primary{height:34px;padding:0 14px;border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:650 14px var(--font);cursor:pointer}.ds-btn-primary:hover{filter:brightness(1.06)}.ds-btn-primary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "ext-button-secondary",
+      "description": "Control-grey pill for secondary calls to action on the welcome page.",
+      "html": "<button class=\"ds-btn\">Open settings</button>",
+      "css": ":host{--accent:#ffb020;--accent-ink:#1d1404;--focus:#e89a00;--ctl-bg:#eff0f2;--ctl-hover:#e4e6e9;--ctl-active:#d9dbdf;--text:#16171a;--muted:#575c66;--surface:#fff;--line:#dcdee2;--fine-zone:rgba(255,176,32,.16);--tick:#a5a9b1;--tick-major:#33363c;--marker:#e89a00;--accent-text:#8a5300;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif} .ds-btn{height:40px;padding:0 18px;border:0;border-radius:999px;background:var(--ctl-bg);color:var(--text);font:600 14px var(--font);cursor:pointer;transition:background .12s}.ds-btn:hover{background:var(--ctl-hover)}.ds-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}"
+    },
+    {
+      "name": "Stepper Row",
+      "kind": "input",
+      "refersTo": "ext-stepper-button",
+      "description": "48px settings row: label left, round minus/plus around a fixed-width tabular value cell.",
+      "html": "<div class=\"ds-row\"><label>Step above switch point</label><span class=\"ds-stepper\"><button class=\"ds-step\" aria-label=\"Less\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 12h12\"/></svg></button><span class=\"ds-value\"><input value=\"0.1\" aria-label=\"Step\"><span class=\"ds-unit\">×</span></span><button class=\"ds-step\" aria-label=\"More\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 6v12M6 12h12\"/></svg></button></span></div>",
+      "css": ":host{--accent:#ffb020;--accent-ink:#1d1404;--focus:#e89a00;--ctl-bg:#eff0f2;--ctl-hover:#e4e6e9;--ctl-active:#d9dbdf;--text:#16171a;--muted:#575c66;--surface:#fff;--line:#dcdee2;--fine-zone:rgba(255,176,32,.16);--tick:#a5a9b1;--tick-major:#33363c;--marker:#e89a00;--accent-text:#8a5300;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif} .ds-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;font:400 14px/1.4 var(--font);color:var(--text);font-variant-numeric:tabular-nums}.ds-stepper{display:inline-flex;align-items:center;gap:4px}.ds-step{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:50%;background:var(--ctl-bg);color:var(--text);cursor:pointer;transition:background .12s}.ds-step:hover{background:var(--ctl-hover)}.ds-step:active{background:var(--ctl-active)}.ds-step:focus-visible{outline:2px solid var(--focus);outline-offset:2px}.ds-value{display:inline-flex;align-items:center;justify-content:center;height:34px;min-width:76px;padding:0 8px;border-radius:999px}.ds-value:focus-within{box-shadow:0 0 0 2px var(--focus)}.ds-value input{width:4.2ch;border:0;padding:0;background:transparent;color:inherit;font:inherit;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}.ds-value input:focus{outline:none}.ds-unit{color:var(--muted);padding-left:1px}"
+    },
+    {
+      "name": "Preset Chip",
+      "kind": "chip",
+      "refersTo": "ext-chip",
+      "description": "Removable preset speed on the settings page.",
+      "html": "<button class=\"ds-chip\"><span>1.5×</span><svg viewBox=\"0 0 24 24\" width=\"15\" height=\"15\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M7 7l10 10M17 7L7 17\"/></svg></button>",
+      "css": ":host{--accent:#ffb020;--accent-ink:#1d1404;--focus:#e89a00;--ctl-bg:#eff0f2;--ctl-hover:#e4e6e9;--ctl-active:#d9dbdf;--text:#16171a;--muted:#575c66;--surface:#fff;--line:#dcdee2;--fine-zone:rgba(255,176,32,.16);--tick:#a5a9b1;--tick-major:#33363c;--marker:#e89a00;--accent-text:#8a5300;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif} .ds-chip{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 8px 0 12px;border:0;border-radius:999px;background:var(--ctl-bg);color:var(--text);font:600 14px var(--font);font-variant-numeric:tabular-nums;cursor:pointer;transition:background .12s}.ds-chip svg{color:var(--muted)}.ds-chip:hover{background:var(--ctl-hover)}.ds-chip:hover svg{color:var(--text)}.ds-chip:focus-visible{outline:2px solid var(--focus);outline-offset:2px}"
+    },
+    {
+      "name": "Speed Scale",
+      "kind": "custom",
+      "refersTo": "ext-card",
+      "description": "Signature: card with one tick per reachable speed, amber fine zone and draggable switch-point needle.",
+      "html": "<section class=\"ds-card\"><div class=\"ds-head\"><strong>Speeds you step through</strong><span>28 speeds</span></div><svg class=\"ds-scale\" viewBox=\"0 0 300 70\"><rect class=\"z\" x=\"150\" y=\"24\" width=\"138\" height=\"28\" rx=\"3\"/><line class=\"b\" x1=\"6\" x2=\"294\" y1=\"50.5\" y2=\"50.5\"/><g class=\"t\"><line x1=\"12\" x2=\"12\" y1=\"50\" y2=\"38\"/><line x1=\"40\" x2=\"40\" y1=\"50\" y2=\"42\"/><line x1=\"68\" x2=\"68\" y1=\"50\" y2=\"42\"/><line x1=\"96\" x2=\"96\" y1=\"50\" y2=\"34\" class=\"M\"/><line x1=\"124\" x2=\"124\" y1=\"50\" y2=\"42\"/></g><g class=\"f\"><line x1=\"160\" x2=\"160\" y1=\"50\" y2=\"42\"/><line x1=\"172\" x2=\"172\" y1=\"50\" y2=\"42\"/><line x1=\"184\" x2=\"184\" y1=\"50\" y2=\"42\"/><line x1=\"196\" x2=\"196\" y1=\"50\" y2=\"42\"/><line x1=\"208\" x2=\"208\" y1=\"50\" y2=\"42\"/><line x1=\"220\" x2=\"220\" y1=\"50\" y2=\"42\"/><line x1=\"232\" x2=\"232\" y1=\"50\" y2=\"42\"/><line x1=\"244\" x2=\"244\" y1=\"50\" y2=\"42\"/><line x1=\"256\" x2=\"256\" y1=\"50\" y2=\"42\"/><line x1=\"268\" x2=\"268\" y1=\"50\" y2=\"42\"/><line x1=\"280\" x2=\"280\" y1=\"50\" y2=\"42\"/></g><circle class=\"p\" cx=\"96\" cy=\"22\" r=\"3\"/><line class=\"n\" x1=\"150\" x2=\"150\" y1=\"18\" y2=\"52\"/><path class=\"n2\" d=\"M150 53 L156 61 L144 61 Z\"/><text class=\"m\" x=\"150\" y=\"14\" text-anchor=\"middle\">2×</text><text class=\"l\" x=\"12\" y=\"68\" text-anchor=\"middle\">0.25×</text><text class=\"l\" x=\"96\" y=\"68\" text-anchor=\"middle\">1×</text></svg></section>",
+      "css": ":host{--accent:#ffb020;--accent-ink:#1d1404;--focus:#e89a00;--ctl-bg:#eff0f2;--ctl-hover:#e4e6e9;--ctl-active:#d9dbdf;--text:#16171a;--muted:#575c66;--surface:#fff;--line:#dcdee2;--fine-zone:rgba(255,176,32,.16);--tick:#a5a9b1;--tick-major:#33363c;--marker:#e89a00;--accent-text:#8a5300;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif} .ds-card{background:var(--surface);border-radius:14px;box-shadow:0 1px 2px rgba(20,22,26,.06),0 2px 8px rgba(20,22,26,.05);padding:12px 14px 10px;font:400 14px/1.4 var(--font);color:var(--text);max-width:360px}.ds-head{display:flex;justify-content:space-between;align-items:baseline}.ds-head strong{font-weight:600}.ds-head span{color:var(--muted);font-size:13px}.ds-scale{display:block;width:100%;margin-top:12px;overflow:visible}.ds-scale .z{fill:var(--fine-zone)}.ds-scale .b{stroke:var(--line)}.ds-scale .t line{stroke:var(--tick);stroke-width:1.25}.ds-scale .t .M{stroke:var(--tick-major);stroke-width:1.5}.ds-scale .f line{stroke:#d48700;stroke-width:1.25}.ds-scale .p{fill:none;stroke:var(--muted);stroke-width:1.5}.ds-scale .n{stroke:var(--marker);stroke-width:2}.ds-scale .n2{fill:var(--marker)}.ds-scale text{font:500 12px var(--font);font-variant-numeric:tabular-nums}.ds-scale .l{fill:var(--muted)}.ds-scale .m{fill:var(--accent-text);font-weight:650}"
+    },
+    {
+      "name": "Player Speed Panel",
+      "kind": "card",
+      "refersTo": "player-panel",
+      "description": "In-player panel in YouTube's menu language: 60% black, 12px corners, 330px, 40px header with hairline.",
+      "html": "<div class=\"ds-ytp\"><div class=\"ds-ytp-head\"><span>Playback speed</span><button class=\"ds-ytp-round ds-ytp-ghost\" aria-label=\"Settings\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 7h9M19 7h1M4 17h3M13 17h7\"/><circle cx=\"16\" cy=\"7\" r=\"2.5\"/><circle cx=\"10\" cy=\"17\" r=\"2.5\"/></svg></button></div><div class=\"ds-ytp-body\"><div class=\"ds-ytp-display\">1.5x</div><div class=\"ds-ytp-chips\"><button class=\"ds-ytp-chip\">1x</button><button class=\"ds-ytp-chip ds-on\">1.5x</button><button class=\"ds-ytp-chip\">2x</button><button class=\"ds-ytp-chip\">2.5x</button></div></div></div>",
+      "css": ".ds-ytp{width:330px;background:rgba(0,0,0,.6);border-radius:12px;color:#eee;font:400 14px/1.25 'YouTube Noto',Roboto,Arial,sans-serif;text-shadow:0 0 2px rgba(0,0,0,.5);overflow:hidden}.ds-ytp-head{display:flex;align-items:center;height:40px;padding:0 8px 0 16px;border-bottom:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.35)}.ds-ytp-head span{flex:1;font-size:12px;font-weight:500}.ds-ytp-round{all:unset;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transition:background .12s}.ds-ytp-ghost{background:transparent;color:rgba(255,255,255,.85)}.ds-ytp-round:hover{background:rgba(255,255,255,.2)}.ds-ytp-round:focus-visible{outline:2px solid #fff;outline-offset:1px}.ds-ytp-body{display:flex;flex-direction:column;gap:16px;padding:24px 16px 16px}.ds-ytp-display{text-align:center;font-size:18px;font-weight:900}.ds-ytp-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.ds-ytp-chip{all:unset;height:32px;display:inline-flex;align-items:center;justify-content:center;padding:0 10px;border-radius:16px;background:rgba(255,255,255,.1);color:#fff;font-size:12px;font-weight:500;cursor:pointer;transition:background .12s}.ds-ytp-chip:hover{background:rgba(255,255,255,.2)}.ds-ytp-chip.ds-on{background:#fff;color:#0f0f0f;text-shadow:none}.ds-ytp-chip:focus-visible{outline:2px solid #fff;outline-offset:1px}"
+    },
+    {
+      "name": "Player Round Button",
+      "kind": "button",
+      "refersTo": "player-round-button",
+      "description": "32px translucent-white circle for minus, plus, back and settings in the player.",
+      "html": "<div class=\"ds-ytp-bg\"><button class=\"ds-ytp-btn\" aria-label=\"Faster\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 6v12M6 12h12\"/></svg></button></div>",
+      "css": ".ds-ytp-bg{display:inline-block;padding:12px;background:rgba(0,0,0,.6);border-radius:12px}.ds-ytp-btn{all:unset;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transition:background .12s}.ds-ytp-btn:hover{background:rgba(255,255,255,.2)}.ds-ytp-btn:active{background:rgba(255,255,255,.28)}.ds-ytp-btn:focus-visible{outline:2px solid #fff;outline-offset:1px}"
+    },
+    {
+      "name": "Player Speed Button",
+      "kind": "button",
+      "refersTo": "player-speed-button",
+      "description": "Control-bar button styled exactly like YouTube's time display.",
+      "html": "<div class=\"ds-bar\"><span class=\"ds-time\">3:12 / 14:05</span><button class=\"ds-speed\">1.5x</button></div>",
+      "css": ".ds-bar{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 12px;background:linear-gradient(transparent,rgba(0,0,0,.6))}.ds-time,.ds-speed{color:#fff;font:500 14px/1 'YouTube Noto',Roboto,Arial,sans-serif;text-shadow:0 0 2px #000}.ds-speed{all:unset;color:#fff;font:500 14px/1 'YouTube Noto',Roboto,Arial,sans-serif;text-shadow:0 0 2px #000;min-width:48px;height:48px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.ds-speed:focus-visible{outline:2px solid #fff;outline-offset:-2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument Cluster, with a native passenger",
+    "overview": "**Creative North Star: \"The Instrument Cluster, with a native passenger\"**\n\nThe product has two visual languages, and which one applies depends on where the surface lives. Extension pages (the settings page, shown in the toolbar popup and in about:addons, and the welcome page opened on install) belong to the icon's world. That world is an instrument cluster: graphite at night, cool grey and white by day, and one amber that lights only what is live. The settings page treats speed as a single instrument reading. A drawn speed scale shows every reachable speed as a tick, the fine-step zone is washed in amber, and an amber switch-point needle can be dragged. Round steppers and fixed-width numeral cells sit under the scale.\n\nInside the YouTube player (the speed button, the speed panel and its settings page, the hotkey bezel and the first-run hint), the extension's brand is absent. Those surfaces copy YouTube's own settings menu and playback-speed submenu as measured: a 60% black panel, 12px corners, 330px width, 40px header, 48px rows, and 32px round controls and chips, all set in YouTube Noto. A user should take them for a player setting, not an overlay.\n\nDensity is compact on both sides: 48px rows and small controls, with no decorative surfaces. Copy is plain.",
+    "keyCharacteristics": [
+      "Two worlds, split by location: extension pages use the instrument cluster, in-player UI uses YouTube's player language.",
+      "Amber (#ffb020) appears only on live values and actions, and only on extension pages.",
+      "Light and dark extension themes come from `prefers-color-scheme` on the same tokens.",
+      "Numerals: tabular on extension pages, proportional in the player.",
+      "Speed is written \"2×\" on extension pages and \"2x\" inside the player.",
+      "In-player sizes are multiplied by `--s` (1, or 1.35 in YouTube's big mode)."
+    ],
+    "rules": [
+      {
+        "name": "The Live Value Rule",
+        "body": "Amber marks only things that are live or actionable: the fine-step zone, the switch-point needle and its label, the primary action, focus, and the \"corrected\" flash. Static labels, headings, chrome and decoration never use it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Native Passenger Rule",
+        "body": "No extension brand colour appears inside the YouTube player. In-player UI uses only translucent black, translucent white, solid white and #0f0f0f.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight-Not-Size Rule",
+        "body": "The settings page holds every element between 12px and 15px. Hierarchy comes from weight (400 / 500 / 600 / 650). Only the welcome page's display, lead and demo readout step outside that band.",
+        "section": "typography"
+      },
+      {
+        "name": "The Fixed Cell Rule",
+        "body": "On extension pages, every number uses tabular figures, and value inputs sit in fixed-width cells (76px minimum, input 4.2ch, right-aligned) so changing a value never shifts the layout. In the player, numbers stay proportional like the rest of YouTube's controls.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two Multipliers Rule",
+        "body": "Write speed with \"×\" on extension pages and with a plain \"x\" inside the player (\"1.5x\"), as YouTube does.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "**Do** pick the language by location: extension-page tokens for anything in the extension's own pages, player tokens for anything injected into YouTube.",
+      "**Do** keep amber for live values and the single primary action, using amber-text tokens wherever amber must be read as text.",
+      "**Do** set extension numerals in tabular figures inside fixed-width cells, and write speed as \"2×\" there.",
+      "**Do** match measured YouTube values in the player (330px, 40px header, 48px rows, 32px controls, 12px corners, 60% black) and multiply them by `--s`.",
+      "**Do** write speed as \"2x\" in the player and keep the speed button identical to the time display.",
+      "**Do** make every extension setting show its result live on the speed scale."
+    ],
+    "donts": [
+      "**Don't** use amber, the system font, tabular figures or \"×\" inside the YouTube player.",
+      "**Don't** use YouTube Noto, translucent-black panels or \"x\" on extension pages.",
+      "**Don't** use amber for headings, labels, borders or decoration.",
+      "**Don't** add size steps to the settings page beyond 12–15px. Use weight for hierarchy.",
+      "**Don't** add shadows on extension pages beyond the card shadow.",
+      "**Don't** imitate YouTube's logo or put the extension icon inside the player."
+    ]
+  }
+}

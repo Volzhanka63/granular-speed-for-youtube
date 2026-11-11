@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome to Granular Speed</title>
+  <link rel="stylesheet" href="options.css">
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <main class="app welcome">
+    <header class="top">
+      <img src="icons/48.png" alt="" width="24" height="24">
+      <span class="brand">Granular Speed</span>
+    </header>
+
+    <section class="intro">
+      <h1>YouTube now goes past 2×</h1>
+      <p class="lead">Pick the exact speed you can follow, from 0.25× to 4×, in steps you choose. This page takes about a minute.</p>
+    </section>
+
+    <section class="scale-card try" aria-labelledby="tryTitle">
+      <div class="scale-head">
+        <h2 id="tryTitle">Try it here</h2>
+        <span class="count">Use the keys or the buttons</span>
+      </div>
+      <div class="readout">
+        <button id="trySlower" class="step" type="button" aria-label="Slower"></button>
+        <output id="trySpeed" aria-live="polite">1×</output>
+        <button id="tryFaster" class="step" type="button" aria-label="Faster"></button>
+      </div>
+      <svg id="tryScale" class="scale" aria-hidden="true"></svg>
+      <p id="tryNote" class="hint"></p>
+    </section>
+
+    <section class="group">
+      <div class="rows">
+        <div class="how">
+          <h2 class="how-title">Keys on YouTube</h2>
+          <ul class="keys">
+            <li><span class="combo"><kbd>Shift</kbd> + <kbd>.</kbd></span> faster</li>
+            <li><span class="combo"><kbd>Shift</kbd> + <kbd>,</kbd></span> slower</li>
+            <li><span class="combo"><kbd>R</kbd></span> 1× and back to your speed</li>
+          </ul>
+          <p class="how-note">They work on any keyboard layout and stay quiet while you type a comment.</p>
+        </div>
+        <div class="how">
+          <h2 class="how-title">The speed button</h2>
+          <p>It sits next to the subtitles button, at the bottom of a regular video and at the top of a Short. Scroll over it to step the speed. Click it for a slider and one-click presets.</p>
+        </div>
+        <div class="how">
+          <h2 class="how-title">Your own steps</h2>
+          <p id="stepsText">Out of the box, speed moves 0.25× at a time up to 2×, then 0.1×. Change both step sizes, where they switch, the range and the presets with the tune icon in that panel, or the toolbar button.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta">
+      <a class="btn primary" href="https://www.youtube.com/" target="_blank" rel="noopener">Open YouTube</a>
+      <button id="openSettings" class="btn" type="button">Open settings</button>
+    </div>
+
+    <p class="privacy">No accounts, no analytics, no network requests. Your speed and settings stay in your Firefox profile.</p>
+  </main>
+  <script src="shared.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

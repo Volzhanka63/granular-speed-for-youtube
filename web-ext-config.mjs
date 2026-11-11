@@ -7,5 +7,8 @@ export default {
     'web-ext-artifacts',
     'web-ext-artifacts/**',
     'web-ext-config.mjs',
+    'PRODUCT.md',
+    '.impeccable',
+    '.impeccable/**',
   ],
 };

@@ -48,5 +48,46 @@ const GS = (() => {
     return [...out].filter((x) => x >= s.min && x <= s.max).sort((x, y) => x - y);
   }
 
-  return { DEFAULTS, LIMITS, normalize, speeds, r2 };
+  // −/+ buttons move along these ladders instead of a fixed increment, so a
+  // step size goes 0.05 → 0.1 → 0.2 → 0.25 in one press each.
+  const LADDERS = {
+    stepLow: [0.01, 0.02, 0.05, 0.1, 0.2, 0.25, 0.5, 1],
+    stepHigh: [0.01, 0.02, 0.05, 0.1, 0.2, 0.25, 0.5, 1],
+    min: [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.75, 1],
+    max: [1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10, 12, 16],
+  };
+
+  // Settings that the −/+ steppers edit, with their labels. `f` formats a
+  // speed: "2×" on extension pages, "2x" inside YouTube's player.
+  const times = (x) => x + '×';
+  const FIELDS = [
+    { key: 'stepLow', label: (s, f = times) => 'Step below ' + f(s.threshold) },
+    { key: 'threshold', label: () => 'Step size changes at' },
+    { key: 'stepHigh', label: (s, f = times) => 'Step above ' + f(s.threshold) },
+    { key: 'min', label: () => 'Slowest' },
+    { key: 'max', label: () => 'Fastest' },
+  ];
+
+  function nudge(s, key, dir) {
+    const cur = s[key];
+    let next;
+    if (key === 'threshold') {
+      // quarter grid: 2.1 goes up to 2.25 and down to 2
+      const q = cur / 0.25;
+      next = (dir > 0 ? Math.floor(q + 1e-9) + 1 : Math.ceil(q - 1e-9) - 1) * 0.25;
+    } else {
+      const L = LADDERS[key];
+      next = dir > 0
+        ? (L.find((v) => v > cur + 1e-9) ?? L[L.length - 1])
+        : (L.findLast((v) => v < cur - 1e-9) ?? L[0]);
+    }
+    return normalize({ ...s, [key]: next });
+  }
+
+  const canNudge = (s, key, dir) => nudge(s, key, dir)[key] !== s[key];
+
+  const withPreset = (s, v) => normalize({ ...s, presets: [...s.presets, v] });
+  const withoutPreset = (s, v) => normalize({ ...s, presets: s.presets.filter((p) => p !== v) });
+
+  return { DEFAULTS, LIMITS, FIELDS, normalize, speeds, nudge, canNudge, withPreset, withoutPreset, r2 };
 })();

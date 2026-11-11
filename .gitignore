@@ -4,3 +4,6 @@ web-ext-artifacts/
 
 node_modules/
 .DS_Store
+
+# Impeccable design-hook cache (machine-local)
+.impeccable/hook.cache.json

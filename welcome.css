@@ -1,0 +1,82 @@
+/* Welcome page: reuses the settings tokens and components from options.css. */
+
+.welcome { max-width: 600px; padding: 20px 20px 28px; gap: 16px; }
+.brand { font-size: 15px; font-weight: 650; }
+
+.intro { padding: 12px 2px 4px; }
+.intro h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.lead { margin: 0; max-width: 52ch; color: var(--muted); font-size: 16px; line-height: 1.5; }
+
+/* Live demo */
+.try .readout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 14px 0 2px;
+}
+.try output {
+  min-width: 4.5ch;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.try .step { --step: 40px; }
+.try .hint { min-height: 2.8em; }
+
+/* How-to rows */
+.how { padding: 12px 0; border-top: 1px solid var(--line); }
+.rows .how:first-child { border-top: 0; padding-top: 8px; }
+.how-title { display: block; margin-bottom: 4px; font-weight: 600; }
+.how p { margin: 0; color: var(--muted); line-height: 1.5; max-width: 62ch; }
+.how .how-note { margin-top: 8px; font-size: 13px; }
+
+.keys { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
+.keys li { display: flex; align-items: center; gap: 10px; color: var(--muted); }
+.combo { display: inline-flex; align-items: center; gap: 4px; min-width: 104px; color: var(--muted); }
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--ctl-bg);
+  color: var(--text);
+  font: 600 13px var(--font);
+}
+
+/* Calls to action */
+.cta { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ctl-bg);
+  color: var(--text);
+  font: 600 14px var(--font);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .12s, filter .12s;
+}
+.btn:hover { background: var(--ctl-hover); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.privacy { margin: 0; padding: 0 2px; color: var(--muted); font-size: 13px; }
