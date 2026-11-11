@@ -17,7 +17,7 @@
   "version": {
     "license": "MIT",
     "release_notes": {
-      "en-US": "First public release. Speeds past 2×, adjustable step sizes and range, hotkeys, a player button with a slider and presets, Shorts support, and a settings page."
+      "en-US": "First release on addons.mozilla.org. Speeds past YouTube's 2× limit, adjustable step sizes and range, hotkeys, a player button with a slider and presets, a speed pill on Shorts, and a settings page. Full history: https://github.com/Volzhanka63/granular-speed-for-youtube/blob/main/CHANGELOG.md"
     },
     "approval_notes": "No build step or minification: the submitted files are the source, also at https://github.com/Volzhanka63/granular-speed-for-youtube. To test, open any youtube.com/watch page and press Shift+. a few times, or click the speed button to the left of the subtitles button. The tune icon in that panel opens the settings page through background.js, which only calls runtime.openOptionsPage(). The toolbar button opens the same settings page."
   },

@@ -67,7 +67,7 @@ WEB_EXT_API_KEY=... WEB_EXT_API_SECRET=... npx web-ext sign --channel=unlisted
 WEB_EXT_API_KEY=... WEB_EXT_API_SECRET=... npx web-ext sign --channel=listed --amo-metadata=listing/metadata.json
 ```
 
-Issues and pull requests are welcome.
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each version. Issues and pull requests are welcome.
 
 ## License
 
