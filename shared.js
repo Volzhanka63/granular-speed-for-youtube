@@ -62,13 +62,13 @@ const GS = (() => {
     max: [1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10, 12, 16],
   };
 
-  // Settings that the −/+ steppers edit. `name` is the full name for screen
-  // readers; the settings page picks the visible wording.
+  // Settings that the −/+ steppers edit. `name` is the accessible name; it
+  // starts with the visible label so speech input matches (WCAG 2.5.3).
   const times = (x) => x + '×';
   const FIELDS = [
-    { key: 'stepLow', name: (s) => 'Step below ' + times(s.threshold) },
-    { key: 'threshold', name: () => 'Where steps change' },
-    { key: 'stepHigh', name: (s) => 'Step above ' + times(s.threshold) },
+    { key: 'stepLow', name: (s) => 'Each press below ' + times(s.threshold) },
+    { key: 'threshold', name: () => 'Steps change at' },
+    { key: 'stepHigh', name: (s) => 'Each press above ' + times(s.threshold) },
     { key: 'min', name: () => 'Slowest speed' },
     { key: 'max', name: () => 'Fastest speed' },
   ];

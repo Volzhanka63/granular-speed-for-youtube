@@ -69,7 +69,7 @@
       ? ' Above ' + fmt(cfg.threshold) + ' the step is smaller, where small changes matter more.'
       : '';
     $('tryNote').textContent = speed >= cfg.max
-      ? 'That’s the fastest speed in your settings. R jumps back to 1×.'
+      ? 'That’s the fastest speed in your settings. R jumps back to ' + fmt(one()) + '.'
       : 'Next press: +' + by + '× to ' + fmt(next) + '.' + why;
     $('trySlower').disabled = speed <= cfg.min;
     $('tryFaster').disabled = speed >= cfg.max;
@@ -78,10 +78,12 @@
 
   function set(v) {
     speed = v;
-    if (v !== 1) last = v;
+    if (v !== one()) last = v;
     render();
   }
-  const back = () => last ?? GS.activePresets(cfg).find((p) => p > 1) ?? step(1);
+  // 1x pulled into your range, as on YouTube (Slowest 1.25x makes R go to 1.25x).
+  const one = () => GS.r2(Math.min(cfg.max, Math.max(cfg.min, 1)));
+  const back = () => last ?? GS.activePresets(cfg).find((p) => p > one()) ?? step(1);
 
   $('trySlower').addEventListener('click', () => set(step(-1)));
   $('tryFaster').addEventListener('click', () => set(step(1)));
@@ -89,7 +91,7 @@
     if (e.ctrlKey || e.altKey || e.metaKey) return;
     if (e.shiftKey && e.code === 'Period') set(step(1));
     else if (e.shiftKey && e.code === 'Comma') set(step(-1));
-    else if (!e.shiftKey && e.code === 'KeyR') set(speed === 1 ? back() : 1);
+    else if (!e.shiftKey && e.code === 'KeyR') set(speed === one() ? back() : one());
     else return;
     e.preventDefault();
   });

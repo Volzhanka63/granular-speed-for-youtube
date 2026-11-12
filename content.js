@@ -24,6 +24,8 @@
   const fmt = (x) => x + 'x'; // YouTube's own convention inside the player ("1.5x")
   const visible = (e) => e && e.isConnected && e.offsetWidth > 0;
   const target = () => (holding ? clamp(want * 2) : want);
+  // Bubble text while holding: the real speed, or "4x · fastest" at the cap.
+  const holdText = () => (want * 2 > cfg.max + 1e-9 ? fmt(cfg.max) + ' · fastest' : fmt(target()));
 
   // Only the real players: the watch page (also in miniplayer/theater/fullscreen)
   // and Shorts. Hover previews on the feed play in #inline-preview-player and are left alone.
@@ -53,24 +55,34 @@
   }
 
   // If something else keeps resetting the speed (another speed add-on), stop
-  // answering for a moment instead of trading events with it forever.
+  // answering for a moment instead of trading events with it forever. Only
+  // undoing changes we didn't make counts; your own key presses never do.
   let fights = [], restUntil = 0;
   function resting() {
     const now = performance.now();
     if (now < restUntil) return true;
     fights = fights.filter((t) => now - t < 1000);
     fights.push(now);
-    if (fights.length > 30) { restUntil = now + 3000; fights = []; return true; }
+    if (fights.length > 30) {
+      restUntil = now + 3000;
+      fights = [];
+      setTimeout(applyAll, 3000); // then put your speed back once
+      return true;
+    }
     return false;
   }
 
-  function apply(v) {
+  let ownWrite = { v: null, rate: 0, at: 0 }; // our last playbackRate write
+
+  // `forced`: answering a change something else made (a media event).
+  function apply(v, forced = false) {
     const p = playerOf(v);
     if (!p || atLiveEdge(v, p)) return false;
     const t = target();
     if (v.playbackRate === t) return false;
-    if (resting()) return false;
+    if (forced && resting()) return false;
     v.playbackRate = t;
+    ownWrite = { v, rate: t, at: performance.now() };
     return true;
   }
 
@@ -110,16 +122,18 @@
   };
 
   // Speed bubble at the top centre of the video, where YouTube shows its own.
-  // `sticky` keeps it up (while holding) until hideBezel().
+  // `x` is a speed or ready-made text; `sticky` keeps it up (while holding)
+  // until hideBezel().
   function show(x = want, sticky = false) {
     const host = (visible(player) && player) || activePlayer() || document.body;
     if (!bezel) bezel = el('div', 'ytsp-bezel');
     if (bezel.parentNode !== host) host.appendChild(bezel);
-    bezel.textContent = fmt(x);
+    const text = typeof x === 'number' ? fmt(x) : x;
+    bezel.textContent = text;
     bezel.hidden = false;
     clearTimeout(bezelTimer);
     if (!sticky) bezelTimer = setTimeout(hideBezel, 700);
-    announce('Speed ' + fmt(x));
+    announce('Speed ' + text);
   }
   function hideBezel() {
     clearTimeout(bezelTimer);
@@ -141,7 +155,7 @@
     if (want !== clamp(1)) last = want;
     applyAll();
     render();
-    if (!fromUI) show();
+    if (!fromUI) show(holding ? holdText() : want, holding);
     browser.storage.local.set({ want, last });
   }
 
@@ -393,8 +407,32 @@
     overlay.style.right = gap + 'px';
   }
 
+  // A click outside only closes the settings, like a toolbar popup: the rest
+  // of that click (mousedown, mouseup, click) never reaches YouTube, so it
+  // doesn't pause the video or follow a link.
   function settingsOutside(e) {
-    if (overlay && !overlay.contains(e.target)) closeSettings();
+    if (!overlay || overlay.contains(e.target)) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    closeSettings();
+    swallowGesture();
+  }
+  function swallowGesture() {
+    const types = ['pointerup', 'mousedown', 'mouseup', 'click', 'dblclick'];
+    let timer;
+    const done = () => {
+      clearTimeout(timer);
+      for (const t of types) removeEventListener(t, kill, true);
+    };
+    const kill = (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (e.type === 'click') done();
+      // click follows mouseup at once; if it never comes, stop shortly after
+      if (e.type === 'pointerup') { clearTimeout(timer); timer = setTimeout(done, 300); }
+    };
+    for (const t of types) addEventListener(t, kill, true);
+    timer = setTimeout(done, 5000); // a press held very long: give up eventually
   }
   // Keep keyboard focus inside the settings while they're open.
   function keepFocus(e) {
@@ -417,7 +455,7 @@
     (document.fullscreenElement || document.body).append(overlay);
     overlay.hidden = false;
     placeSettings();
-    document.addEventListener('pointerdown', settingsOutside, true);
+    addEventListener('pointerdown', settingsOutside, true);
     document.addEventListener('focusin', keepFocus, true);
     addEventListener('resize', placeSettings);
     frame.focus();
@@ -427,7 +465,7 @@
     if (!overlay || overlay.hidden) return;
     overlay.hidden = true;
     frame.src = 'about:blank';
-    document.removeEventListener('pointerdown', settingsOutside, true);
+    removeEventListener('pointerdown', settingsOutside, true);
     document.removeEventListener('focusin', keepFocus, true);
     removeEventListener('resize', placeSettings);
     if (visible(btn)) btn.focus();
@@ -455,7 +493,7 @@
   // speed picked there is undone like any other change, but with the bubble,
   // so it's clear the extension is in charge.
   let menuClick = 0;
-  const MENUS = '.ytp-settings-menu, .ytp-popup, tp-yt-iron-dropdown, ytd-menu-popup-renderer, yt-sheet-view-model, [role="menu"], [role="menuitem"], [role="menuitemradio"]';
+  const MENUS = '.ytp-settings-menu, .ytp-popup, tp-yt-iron-dropdown, ytd-menu-popup-renderer, yt-sheet-view-model';
   for (const ev of ['click', 'input', 'keydown']) {
     document.addEventListener(ev, (e) => {
       const t = e.composedPath()[0];
@@ -463,16 +501,25 @@
     }, true);
   }
 
+  // YouTube's hold sets 2x. It counts as a hold only if the press has lasted
+  // a moment and the 2x isn't our own write (e.g. a key press to 2x).
+  function isYouTubeHold(v) {
+    const now = performance.now();
+    if (!pressing || holding || v.playbackRate !== 2 || now - pressing < 300) return false;
+    return !(ownWrite.v === v && ownWrite.rate === 2 && now - ownWrite.at < 250);
+  }
+
   // YouTube resets the rate on every new video/ad. Media events don't bubble,
-  // but capture-phase listeners on document still see them.
-  for (const ev of ['loadeddata', 'playing', 'ratechange']) {
+  // but capture-phase listeners on document still see them. 'seeked' covers
+  // going back from a live stream's live edge.
+  for (const ev of ['loadeddata', 'playing', 'seeked', 'ratechange']) {
     document.addEventListener(ev, (e) => {
       const v = e.target;
       if (v.localName !== 'video') return;
       const p = playerOf(v);
       if (!p) return; // hover previews and other embedded players keep their own speed
-      if (ev === 'ratechange' && pressing && !holding && v.playbackRate === 2) startHold();
-      const changed = apply(v);
+      if (ev === 'ratechange' && isYouTubeHold(v)) startHold();
+      const changed = apply(v, true);
       if (ev === 'ratechange') {
         if (changed && !holding && performance.now() - menuClick < 1500) show();
         ensureUI();
@@ -491,12 +538,19 @@
     holding = true;
     for (const p of document.querySelectorAll('#movie_player, #shorts-player')) p.classList.add('ytsp-holding');
     applyAll();
-    if (target() !== want) show(target(), true);
+    show(holdText(), true); // also at Fastest, so the hold is never silent
+  }
+
+  // A release we missed (over another frame, outside the window): the next
+  // move with no button down ends the press.
+  function pointerCheck(e) {
+    if (e.buttons === 0) endHold();
   }
 
   function endHold() {
     clearTimeout(holdTimer);
     pressing = 0;
+    removeEventListener('pointermove', pointerCheck, true);
     if (!holding) return;
     holding = false;
     for (const p of document.querySelectorAll('.ytsp-holding')) p.classList.remove('ytsp-holding');
@@ -510,6 +564,7 @@
     const p = t && t.nodeType === 1 && t.closest('#movie_player, #shorts-player');
     if (!p || t.closest(NOT_VIDEO)) return;
     pressing = performance.now();
+    addEventListener('pointermove', pointerCheck, true);
     // At exactly 2x, YouTube's switch to 2x fires no ratechange, so watch for
     // its hold overlay instead.
     clearTimeout(holdTimer);
@@ -519,6 +574,7 @@
   }, true);
   for (const ev of ['pointerup', 'pointercancel']) window.addEventListener(ev, endHold, true);
   window.addEventListener('blur', endHold);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) endHold(); });
 
   // ---- Hotkeys ----
 
@@ -551,9 +607,6 @@
     applySettings(s.settings); // also clamps want/last and applies
     ensureUI();
   });
-
-  // Leftovers from earlier versions: the first-run hint and the test switch.
-  browser.storage.local.remove(['hintDone', 'devVariant']);
 
   // Keep tabs in sync and pick up changes from any settings view.
   browser.storage.onChanged.addListener((c) => {

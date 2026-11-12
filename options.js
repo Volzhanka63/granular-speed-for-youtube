@@ -13,7 +13,10 @@
   const compact = view !== 'page';
 
   let cfg = GS.normalize();
-  let statusTimer, undoCfg = null;
+  let statusTimer;
+  // What Undo brings back while it's showing: { presets: [removed…] } re-adds
+  // those to the current settings; { cfg } puts back a snapshot (Reset).
+  let undo = null, undoGen = 0;
   const rows = {};
 
   // Visible row names; GS.FIELDS has the full names for screen readers.
@@ -43,29 +46,50 @@
   const PLUS = 'M12 6v12M6 12h12';
   const CLOSE = 'M7 7l10 10M17 7L7 17';
 
-  // Status in the header. With `undo`, an Undo button stays for 5 seconds.
-  function flash(text, undo = null) {
+  function dropUndo() {
+    undo = null;
+    $('undo').hidden = true;
+  }
+
+  // Status in the header. While there's something to undo, the Undo button
+  // stays for 5 seconds.
+  function flash(text) {
     const s = $('status');
     s.textContent = text;
     s.classList.add('on');
-    undoCfg = undo;
     $('undo').hidden = !undo;
     clearTimeout(statusTimer);
+    const gen = undoGen;
     statusTimer = setTimeout(() => {
       s.classList.remove('on');
-      $('undo').hidden = true;
-      undoCfg = null;
+      if (gen === undoGen) dropUndo();
     }, undo ? 5000 : 1600);
   }
 
-  function save(next, msg = 'Saved', undo = null) {
+  // Every change ends the previous Undo unless it passes a new one.
+  function save(next, msg = 'Saved', undoState = null) {
     cfg = next;
+    undo = undoState;
+    undoGen++;
+    if (!undo) $('undo').hidden = true;
     render();
-    browser.storage.local.set({ settings: next }).then(() => flash(msg, undo));
+    browser.storage.local.set({ settings: next }).then(() => flash(msg));
+  }
+
+  // After the chips are rebuilt, keep focus in the presets: first chip, or Add.
+  function focusPresets() {
+    requestAnimationFrame(() => ($('chips').querySelector('.chip') || $('addInput')).focus());
   }
 
   $('undo').addEventListener('click', () => {
-    if (undoCfg) save(undoCfg, 'Restored');
+    if (!undo) return;
+    if (undo.presets) {
+      const back = undo.presets;
+      save(back.reduce((c, p) => GS.withPreset(c, p), cfg), 'Restored ' + back.map(fmt).join(', '));
+    } else {
+      save(undo.cfg, 'Restored');
+    }
+    focusPresets();
   });
 
   // ---- stepper rows ----
@@ -155,9 +179,10 @@
       t.textContent = fmt(p);
       chip.append(t, icon(CLOSE));
       chip.addEventListener('click', () => {
-        const prev = cfg;
-        save(GS.withoutPreset(cfg, p), 'Removed ' + fmt(p), prev);
-        requestAnimationFrame(() => (box.querySelector('.chip') || $('addInput')).focus());
+        // Removals in a row collect, so one Undo brings them all back.
+        const removed = [...(undo && undo.presets ? undo.presets : []), p];
+        save(GS.withoutPreset(cfg, p), 'Removed ' + removed.map(fmt).join(', '), { presets: removed });
+        focusPresets();
       });
       box.append(chip);
     }
@@ -238,7 +263,7 @@
 
     // marker for where steps change; the only part of the scale you can drag
     const mx = x(s.threshold);
-    const g = svgEl('g', { class: 'marker', tabindex: 0, role: 'slider', 'aria-label': 'Where steps change', 'aria-valuemin': s.min, 'aria-valuemax': s.max, 'aria-valuenow': s.threshold, 'aria-valuetext': fmt(s.threshold) }, scale);
+    const g = svgEl('g', { class: 'marker', tabindex: 0, role: 'slider', 'aria-label': 'Steps change at', 'aria-valuemin': s.min, 'aria-valuemax': s.max, 'aria-valuenow': s.threshold, 'aria-valuetext': fmt(s.threshold) }, scale);
     svgEl('rect', { class: 'hit', x: mx - 14, y: 1, width: 28, height: H - 2, rx: 6 }, g);
     svgEl('line', { class: 'needle', x1: mx, x2: mx, y1: base - 32, y2: base + 2 }, g);
     svgEl('path', { class: 'head', d: `M${mx} ${base + 3} L${mx + 6} ${base + 11} L${mx - 6} ${base + 11} Z` }, g);
@@ -345,8 +370,7 @@
   }
 
   $('reset').addEventListener('click', () => {
-    const prev = cfg;
-    save(GS.normalize(), 'Defaults restored', prev);
+    save(GS.normalize(), 'Defaults restored', { cfg });
   });
 
   // Shown over YouTube: tell the player script our height, and let it close us.
@@ -376,7 +400,13 @@
   // Changes made in the player panel show up here live.
   browser.storage.onChanged.addListener((c) => {
     if (c.settings && !drag) {
-      cfg = GS.normalize(c.settings.newValue);
+      const next = GS.normalize(c.settings.newValue);
+      // Our own save echoing back: already drawn. Redrawing would rebuild the
+      // chips and drop keyboard focus.
+      if (JSON.stringify(next) === JSON.stringify(cfg)) return;
+      // A change from another view makes a Reset snapshot stale.
+      if (undo && undo.cfg) dropUndo();
+      cfg = next;
       render();
     }
   });
