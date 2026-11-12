@@ -15,5 +15,7 @@ export default {
     'CHANGELOG.md',
     '.impeccable',
     '.impeccable/**',
+    '.agents',
+    '.agents/**',
   ],
 };

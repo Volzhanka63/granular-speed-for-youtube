@@ -82,7 +82,42 @@ kbd {
 .btn.primary:hover { filter: brightness(1.06); }
 .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-.privacy { margin: 0; padding: 0 2px; color: var(--muted); font-size: 13px; }
+.privacy { display: grid; gap: 6px; padding: 0 2px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.privacy p { margin: 0; }
+.privacy .link { padding: 0; }
+
+/* Details folded below the buttons */
+.folds { padding: 4px 14px; }
+.fold { border-top: 1px solid var(--line); }
+.fold:first-child { border-top: 0; }
+.fold summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.fold summary::-webkit-details-marker { display: none; }
+.fold summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-right: 4px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .12s;
+}
+.fold[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.fold summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.fold > p, .fold > ul { margin: 0 0 12px; color: var(--muted); line-height: 1.5; max-width: 62ch; }
+.fold .how-note { margin: -4px 0 12px; font-size: 13px; color: var(--muted); }
+.fold code { font-size: 12px; word-break: break-all; }
 
 /* Where it works */
 .where { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--muted); line-height: 1.5; }

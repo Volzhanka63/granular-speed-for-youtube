@@ -9,9 +9,9 @@
 - At the live edge of a live stream the extension leaves the speed to YouTube. Go back a bit and your speed applies again.
 - If another speed add-on keeps resetting the speed, this one pauses for 3 seconds instead of looping, then sets your speed again. Your own key presses never cause the pause.
 - Undo for "Reset to defaults" and for removing presets, for 5 seconds. Remove several presets in a row and one Undo brings them all back.
-- A legend under the speed scale, a description of the scale for screen readers, and a "Rate this add-on" link in the settings footer.
+- A legend under the speed scale, a description of the scale for screen readers, and "Rate" and "Feedback" links in the settings footer. Feedback goes to granular@maxfadeyev.com.
 - A note in the settings explains outlined presets. They're outside your range, so the player hides them.
-- The welcome page now explains hold for double, how the extension keeps your speed, and where it works.
+- The welcome page now explains hold to double, how the extension keeps your speed, and where it works. The demo and the three ways to change speed come first; the details fold away below.
 
 **Changed**
 

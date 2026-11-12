@@ -15,14 +15,14 @@
     </header>
 
     <section class="intro">
-      <h1>YouTube now goes past 2×</h1>
-      <p class="lead">Pick the exact speed you can follow, from <span id="range">0.25× to 4×</span>, in steps you choose. This page takes about two minutes to read.</p>
+      <h1>YouTube now goes faster than 2×</h1>
+      <p class="lead">Go as fast as you like, in steps that suit you, with the shortcuts you already know. Your range right now is <span id="range">0.25× to 4×</span>. Try it below, then on a real video.</p>
     </section>
 
     <section class="scale-card try" aria-labelledby="tryTitle">
       <div class="scale-head">
         <h2 id="tryTitle">Try it here</h2>
-        <span class="count">Use the keys or the buttons</span>
+        <span class="count">Press Shift + . or use the buttons</span>
       </div>
       <div class="readout">
         <button id="trySlower" class="step" type="button" aria-label="Slower"></button>
@@ -34,67 +34,58 @@
     </section>
 
     <section class="group" aria-labelledby="controlsTitle">
-      <h2 id="controlsTitle" class="section-title">Controls</h2>
+      <h2 id="controlsTitle" class="section-title">Three ways to change speed</h2>
       <div class="rows">
         <div class="how">
-          <h3 class="how-title">Keys</h3>
+          <h3 class="how-title">Keyboard shortcuts</h3>
           <ul class="keys">
             <li><span class="combo"><kbd>Shift</kbd> + <kbd>.</kbd></span> faster</li>
             <li><span class="combo"><kbd>Shift</kbd> + <kbd>,</kbd></span> slower</li>
             <li><span class="combo"><kbd>R</kbd></span> 1× and back to your speed</li>
           </ul>
-          <p class="how-note">These are YouTube’s own speed keys, now without the 2× limit. They go by key position, so they keep working when you switch your keyboard to another language. They only act when a video is on the page. While you type a comment or a search, they type as usual.</p>
-        </div>
-        <div class="how">
-          <h3 class="how-title">Hold for double speed</h3>
-          <p>Hold the mouse button down on the video and it plays at twice your speed, up to your fastest setting (<span id="holdMax">4×</span>). At 1.5× you get 3×. Let go and you’re back. YouTube’s own hold always gives 2×, which is no help if you already watch at 2× or faster, so the extension replaces it.</p>
+          <p class="how-note">These are YouTube’s own shortcuts, so there’s nothing new to learn. They work with any keyboard language and stay out of the way while you type a comment or a search.</p>
         </div>
         <div class="how">
           <h3 class="how-title">The speed button</h3>
-          <p>It shows your current speed in the player’s controls: bottom right on a regular video, top right on a Short. Scroll over it to step the speed. Click it for a slider and one-click presets. The tune icon in that panel opens all settings without leaving the video.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="group" aria-labelledby="logicTitle">
-      <h2 id="logicTitle" class="section-title">How it works</h2>
-      <div class="rows">
-        <div class="how">
-          <h3 class="how-title">Two step sizes</h3>
-          <p id="stepsText">Out of the box, speed moves 0.25× at a time up to 2×, then 0.1×. Near the top of what you can follow, a small change decides whether you keep up with the speaker, so the steps get smaller there. You choose both step sizes and where they change.</p>
+          <p>Your speed shows in the player’s controls: bottom right on a video, top right on a Short. Scroll over it to change speed, or click it for a slider and presets. The settings icon in that panel opens all settings without leaving the video.</p>
         </div>
         <div class="how">
-          <h3 class="how-title">Your speed sticks</h3>
-          <p>YouTube resets the speed on every new video and ad. The extension puts yours back each time, so it carries over to the next video, other tabs and the next time you open Firefox. Hover previews in the feed stay at normal speed.</p>
-        </div>
-        <div class="how">
-          <h3 class="how-title">One speed control</h3>
-          <p>Because the extension keeps your speed, YouTube’s own speed menu can’t change it. Pick a speed there and a bubble shows the speed you’re really at. If you use another speed extension, turn it off for YouTube, or the two will undo each other.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="group" aria-labelledby="whereTitle">
-      <h2 id="whereTitle" class="section-title">Where it works</h2>
-      <div class="rows">
-        <div class="how">
-          <ul class="where">
-            <li class="yes">Regular videos on youtube.com, including theater mode, fullscreen and the miniplayer</li>
-            <li class="yes">Shorts</li>
-            <li class="part">Live streams. At the live edge there’s nothing ahead to speed through, so the extension leaves the speed to YouTube. Go back a bit and your speed applies again.</li>
-            <li class="no">YouTube Music, the mobile site, Firefox for Android, and YouTube videos embedded on other sites</li>
-          </ul>
-          <p id="audioNote" class="how-note" hidden>Firefox mutes the sound above 8×. To keep it, raise <code>media.audio.playbackrate.muting_threshold</code> in about:config.</p>
+          <h3 class="how-title">Hold to double</h3>
+          <p>Hold the mouse on the video for twice your speed, up to <span id="holdMax">4×</span>. At 1.5× you get 3×. Let go and you’re back.</p>
         </div>
       </div>
     </section>
 
     <div class="cta">
-      <a class="btn primary" href="https://www.youtube.com/" target="_blank" rel="noopener">Open YouTube</a>
+      <a class="btn primary" href="https://www.youtube.com/" target="_blank" rel="noopener">Open YouTube and try it</a>
       <button id="openSettings" class="btn" type="button">Open settings</button>
     </div>
 
-    <p class="privacy">No accounts, no analytics, no network requests. The extension only has access to youtube.com, and your speed and settings stay in your Firefox profile.</p>
+    <section class="group folds" aria-label="More details">
+      <details class="fold">
+        <summary>How your speed stays set</summary>
+        <p>YouTube resets the speed on every new video and ad. Granular Speed puts yours back each time, so it carries over to the next video, other tabs and the next time you open Firefox. YouTube’s own speed menu follows it too, so there’s only ever one speed to think about. Hover previews in the feed stay at normal speed. If you use another speed add-on, turn it off on YouTube, or the two will keep undoing each other.</p>
+      </details>
+      <details class="fold">
+        <summary>Your steps and range</summary>
+        <p id="stepsText">Out of the box, speed moves 0.25× at a time up to 2×, then 0.1×. Near the top of what you can follow, one small step decides whether you keep up with the speaker, so the steps get finer there. Everyone’s comfortable speed is different, so you can change both steps, where they switch, and your range in the settings.</p>
+      </details>
+      <details class="fold">
+        <summary>Where it works</summary>
+        <ul class="where">
+          <li class="yes">Regular videos on youtube.com, including theater mode, fullscreen and the miniplayer</li>
+          <li class="yes">Shorts</li>
+          <li class="part">Live streams. At the live edge there’s nothing ahead to speed through, so the add-on leaves the speed to YouTube. Go back a bit and your speed applies again.</li>
+          <li class="no">YouTube Music, the mobile site, Firefox for Android, and YouTube videos embedded on other sites</li>
+        </ul>
+        <p id="audioNote" class="how-note" hidden>Firefox mutes the sound above 8×. To keep it, raise <code>media.audio.playbackrate.muting_threshold</code> in about:config.</p>
+      </details>
+    </section>
+
+    <footer class="privacy">
+      <p>No accounts, no analytics, no network requests. The add-on only runs on youtube.com, and your settings stay in your Firefox profile.</p>
+      <p>Something broken or missing? Email <a class="link" href="mailto:granular@maxfadeyev.com">granular@maxfadeyev.com</a> or <a class="link" href="https://github.com/Volzhanka63/granular-speed-for-youtube/issues" target="_blank" rel="noopener">open an issue on GitHub</a>.</p>
+    </footer>
   </main>
   <script src="shared.js"></script>
   <script src="welcome.js"></script>

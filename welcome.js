@@ -109,7 +109,7 @@
     const d = GS.DEFAULTS;
     if (cfg.stepLow !== d.stepLow || cfg.stepHigh !== d.stepHigh || cfg.threshold !== d.threshold) {
       $('stepsText').textContent = 'With your settings, speed moves ' + cfg.stepLow + '× at a time up to ' + fmt(cfg.threshold) +
-        ', then ' + cfg.stepHigh + '×. Near the top of what you can follow, a small change decides whether you keep up with the speaker, so the second step is usually the smaller one. You can change both, and where they change, in the settings.';
+        ', then ' + cfg.stepHigh + '×. Near the top of what you can follow, one small step decides whether you keep up, so the second step is usually the smaller one. You can change both steps, where they switch, and your range in the settings.';
     }
     render();
   });
