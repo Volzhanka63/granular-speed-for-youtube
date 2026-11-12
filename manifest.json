@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Granular Speed for YouTube",
-  "version": "1.4.0",
-  "description": "YouTube playback speed in fine steps you choose, from 0.25x to 4x by default. Hotkeys, a player button and a settings page.",
+  "version": "1.5.0",
+  "description": "YouTube playback speed past 2x, in steps you choose. YouTube's own speed keys, a button in the player, Shorts support.",
   "homepage_url": "https://github.com/Volzhanka63/granular-speed-for-youtube",
   "icons": {
     "48": "icons/48.png",
