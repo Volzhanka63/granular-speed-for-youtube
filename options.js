@@ -104,7 +104,7 @@
       const text = document.createElement('span');
       const idle = document.createElement('span');
       idle.className = 'idle-note';
-      idle.textContent = 'not used';
+      idle.id = 'idle-' + f.key;
       label.append(text, idle);
       const stepper = document.createElement('div');
       stepper.className = 'stepper';
@@ -145,7 +145,7 @@
         save(next, moved.length ? 'Adjusted to fit' : 'Saved');
         for (const key of moved) markAdjusted(rows[key].row);
       });
-      rows[f.key] = { f, row, text, input, minus, plus };
+      rows[f.key] = { f, row, text, idle, input, minus, plus };
     }
   }
 
@@ -192,6 +192,8 @@
       empty.textContent = 'No presets. The player panel hides the preset row.';
       box.append(empty);
     }
+    // One line explains outlined chips, only while there are any.
+    $('offNote').hidden = !cfg.presets.some((p) => p < cfg.min || p > cfg.max);
     // At the limit, the Add field gives way to a short note in the same spot.
     const full = cfg.presets.length >= GS.LIMITS.presets;
     $('addForm').hidden = full;
@@ -297,7 +299,7 @@
     };
     if (s.threshold < s.max) item('sw-zone', fmt(s.stepHigh) + ' steps');
     if (GS.activePresets(s).length) item('sw-preset', 'preset');
-    item('sw-marker', 'drag to move');
+    item('sw-marker', 'steps change here (drag)');
   }
 
   function valueAt(clientX) {
@@ -354,8 +356,16 @@
       r.plus.setAttribute('aria-label', 'Increase ' + name.toLowerCase());
     }
     // With the switch point at an end, one step size has nothing to act on.
+    // The row says so on a second line under its label.
     rows.stepLow.row.classList.toggle('idle', s.threshold <= s.min);
     rows.stepHigh.row.classList.toggle('idle', s.threshold >= s.max);
+    rows.stepLow.idle.textContent = 'Not used: none below ' + fmt(s.threshold);
+    rows.stepHigh.idle.textContent = 'Not used: none above ' + fmt(s.threshold);
+    for (const key of ['stepLow', 'stepHigh']) {
+      const r = rows[key];
+      if (r.row.classList.contains('idle')) r.input.setAttribute('aria-describedby', 'idle-' + key);
+      else r.input.removeAttribute('aria-describedby');
+    }
     $('audioNote').hidden = s.max <= 8;
   }
 

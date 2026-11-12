@@ -317,12 +317,13 @@ The form language is round. Both worlds share it, so they feel related without s
 
 ### Speed scale (extension signature)
 - An SVG drawn by options.js: one tick per reachable speed (major ticks darker and thicker), an amber fine-step zone wash (rx 3), preset speeds shown as 3px muted rings, and a 2px amber needle with a triangular head and a 650-weight value label. Only the marker can be dragged; a click elsewhere on the scale does nothing. Arrow keys move it. Its focus shows an amber wash and a 2px focus-amber ring on the hit area.
-- A one-line legend sits under the scale: an amber swatch for the second step size ("0.1× steps"), a ring for "preset", and the ▲ for "drag to move". A hidden sentence describes the scale for screen readers.
-- Rows: "Each press below 2×", "Steps change at", "Each press above 2×", then Slowest and Fastest. One name for the idea everywhere: where steps change. When the marker sits at an end, the row for the empty side dims to 50% with "not used".
+- A one-line legend sits under the scale: an amber swatch for the second step size ("0.1× steps"), a ring for "preset", and the ▲ for "steps change here (drag)". Each key stays on one line, and the legend fits one line in the 380px popup. A hidden sentence describes the scale for screen readers.
+- Rows: "Each press below 2×", "Steps change at", "Each press above 2×", then Slowest and Fastest. One name for the idea everywhere: where steps change. When the marker sits at an end, the row for the empty side has nothing to act on: its label turns muted, its stepper drops to 50%, and a 12px muted second line under the label says so ("Not used: none above 4×"). Screen readers get that line as the input's description.
 
 ### Chips (extension)
 - 32px control-grey pills with a 600-weight number and a muted 15px close icon that darkens to text colour on hover. Wrapping row, 8px gap.
-- A preset outside the current range stays saved and shows as an outlined muted chip (transparent fill, 1px line ring, weight 500). The player hides it until the range includes it again.
+- Compact (popup and settings window): 28px pills, 9px/5px side padding, a 13px icon 2px from the number, 5px gap, so the six default presets fit on one row at 380px.
+- A preset outside the current range stays saved and shows as an outlined muted chip (transparent fill, 1px tick-grey ring, weight 500). The player hides it until the range includes it again. While at least one exists, a 12px muted line under the chips explains it: "Outlined: outside your range, so the player hides them."
 - Preset errors appear in 13px text right under the Add field, marked with an amber "!", and clear as you type.
 
 ### Player speed button
