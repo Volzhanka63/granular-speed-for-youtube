@@ -2,7 +2,7 @@
 
 YouTube past 2x, from the keyboard, in steps you choose. A Firefox extension.
 
-![Speed panel in the YouTube player](listing/screenshot-panel.png)
+![Speed panel in the YouTube player](screenshots/panel.png)
 
 I watch lectures and talks at around 2.3x. Without Premium, YouTube stops at 2x, and its speed keys move a quarter at a time: 1.75x, 2x, done. This extension keeps YouTube's keys and takes the cap off. Above 2x the steps get smaller, 0.1x by default, because that's where a small change decides whether you keep up with the speaker.
 
@@ -36,9 +36,9 @@ Download the signed `.xpi` from the [latest release](https://github.com/Volzhank
 
 The tune icon in the player panel opens the full settings in the top-right corner of the page, like the toolbar popup. It works in fullscreen too. A click outside or `Esc` closes them, and that click doesn't reach the video. The same settings open from the toolbar button and `about:addons`. Changes apply right away in every open YouTube tab, and Reset and preset removal can be undone for a few seconds.
 
-![Settings](listing/screenshot-settings.png)
+![Settings](screenshots/settings.png)
 
-![Speed panel on a Short](listing/screenshot-shorts.png)
+![Speed panel on a Short](screenshots/shorts.png)
 
 ## Privacy
 
@@ -57,9 +57,8 @@ YouTube's 2x cap lives in its menu, not in the video element, so `content.js` se
 | `options.html`, `options.js`, `options.css` | Settings page, also used as the toolbar popup |
 | `welcome.html`, `welcome.js`, `welcome.css` | Welcome page with a live demo of the keys |
 | `background.js` | Opens the welcome page once, on install, and on update clears storage keys older versions left behind. Firefox starts it only for install and update events |
-| `PRODUCT.md`, `DESIGN.md` | Product facts and the design system, for future design work (not packaged) |
 | `icons/` | PNG icons; `icon.svg` is the source |
-| `listing/` | addons.mozilla.org listing text and screenshots, not packaged |
+| `screenshots/` | Images for this README, not packaged |
 
 ## Development
 
@@ -79,7 +78,7 @@ To sign a release, get API credentials at https://addons.mozilla.org/developers/
 WEB_EXT_API_KEY=... WEB_EXT_API_SECRET=... npx web-ext sign --channel=unlisted
 
 # public listing on addons.mozilla.org
-WEB_EXT_API_KEY=... WEB_EXT_API_SECRET=... npx web-ext sign --channel=listed --amo-metadata=listing/metadata.json
+WEB_EXT_API_KEY=... WEB_EXT_API_SECRET=... npx web-ext sign --channel=listed --amo-metadata=<listing-metadata.json>
 ```
 
 See [CHANGELOG.md](CHANGELOG.md) for what changed in each version. Issues and pull requests are welcome.

@@ -10,3 +10,9 @@ node_modules/
 
 # Local session notes (personal setup, release steps)
 HANDOFF.md
+
+# Working documents: kept on this machine only, never pushed
+DESIGN.md
+PRODUCT.md
+.impeccable/
+listing/

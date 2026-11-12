@@ -3,6 +3,8 @@ export default {
   ignoreFiles: [
     'listing',
     'listing/**',
+    'screenshots',
+    'screenshots/**',
     'icons/icon.svg',
     'web-ext-artifacts',
     'web-ext-artifacts/**',
