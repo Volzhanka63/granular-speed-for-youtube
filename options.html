@@ -8,13 +8,6 @@
 </head>
 <body>
   <main class="app">
-    <!-- VARIANT: test switch, removed once a version is picked -->
-    <div id="devbar" class="devbar" role="group" aria-label="Test versions">
-      <span>Test</span>
-      <span class="seg" data-key="steps"><button type="button" data-v="A">Steps A</button><button type="button" data-v="B">Steps B</button></span>
-      <span class="seg" data-key="pos"><button type="button" data-v="corner">Corner</button><button type="button" data-v="button">From button</button></span>
-    </div>
-
     <header class="top">
       <img src="icons/48.png" alt="" width="24" height="24">
       <h1>Granular Speed</h1>
@@ -26,10 +19,9 @@
     <section class="scale-card" aria-labelledby="scaleTitle">
       <div class="scale-head">
         <h2 id="scaleTitle">Your speeds</h2>
-        <span id="scaleHint" class="hint">Drag ▲ to set where steps change</span>
       </div>
       <svg id="scale" class="scale" role="group" aria-labelledby="scaleTitle" aria-describedby="scaleSummary"></svg>
-      <p id="legend" class="legend" hidden></p>
+      <p id="legend" class="legend"></p>
       <p id="scaleSummary" class="sr-only"></p>
     </section>
 

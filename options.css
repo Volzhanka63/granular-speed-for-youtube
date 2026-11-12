@@ -295,24 +295,13 @@ a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-r
 .undo { padding: 0 2px; color: var(--accent-text); font-weight: 600; }
 .undo[hidden] { display: none; }
 
-/* Legend under the scale (steps version B) */
+/* Legend under the scale */
 .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 2px 0 0; color: var(--muted); font-size: 12px; }
-.legend[hidden] { display: none; }
 .legend .key { display: inline-flex; align-items: center; gap: 6px; }
 .sw { display: inline-block; flex: none; }
 .sw-zone { width: 14px; height: 10px; border-radius: 2px; background: var(--fine-zone); box-shadow: inset 0 -2px 0 var(--fine); }
 .sw-preset { width: 6px; height: 6px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--muted); margin: 0 2px; }
 .sw-marker { width: 0; height: 0; border: 5px solid transparent; border-top: 0; border-bottom: 7px solid var(--marker); }
-
-/* Steps version A: the rows read as one sentence, top to bottom */
-[data-steps="A"] .rows .row { border-top: 0; min-height: calc(var(--row-h) - 6px); }
-[data-steps="A"] .rows .row + .row label { padding-left: 14px; }
-
-/* VARIANT: test switch, removed once a version is picked */
-.devbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 6px 10px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); font-size: 12px; }
-.seg { display: inline-flex; border-radius: 999px; background: var(--ctl-bg); padding: 2px; }
-.seg button { border: 0; padding: 3px 9px; border-radius: 999px; background: none; color: var(--muted); font: inherit; cursor: pointer; }
-.seg button[aria-pressed="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: var(--card-shadow); }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }

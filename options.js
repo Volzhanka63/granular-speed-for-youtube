@@ -16,18 +16,13 @@
   let statusTimer, undoCfg = null;
   const rows = {};
 
-  // VARIANT: two wordings for the step settings, until one is picked.
-  // A reads as one sentence down the rows; B names each row and adds a legend.
-  let variant = { steps: 'A', pos: 'corner' };
+  // Visible row names; GS.FIELDS has the full names for screen readers.
   const LABELS = {
-    A: { stepLow: () => 'Change speed by', threshold: () => 'up to', stepHigh: () => 'then by', min: () => 'From', max: () => 'to' },
-    B: {
-      stepLow: (s) => 'Each press below ' + fmt(s.threshold),
-      threshold: () => 'Steps change at',
-      stepHigh: (s) => 'Each press above ' + fmt(s.threshold),
-      min: () => 'Slowest',
-      max: () => 'Fastest',
-    },
+    stepLow: (s) => 'Each press below ' + fmt(s.threshold),
+    threshold: () => 'Steps change at',
+    stepHigh: (s) => 'Each press above ' + fmt(s.threshold),
+    min: () => 'Slowest',
+    max: () => 'Fastest',
   };
 
   // ---- small DOM helpers ----
@@ -262,11 +257,10 @@
     renderLegend(s);
   }
 
-  // VARIANT B: a one-line key under the scale.
+  // A one-line key under the scale.
   function renderLegend(s) {
     const lg = $('legend');
     lg.textContent = '';
-    if (variant.steps !== 'B') return;
     const item = (cls, text) => {
       const i = document.createElement('span');
       i.className = 'key';
@@ -323,11 +317,10 @@
   // ---- render ----
 
   function renderRows(s) {
-    const L = LABELS[variant.steps];
     for (const key in rows) {
       const r = rows[key];
       const name = r.f.name(s);
-      r.text.textContent = L[key](s);
+      r.text.textContent = LABELS[key](s);
       if (document.activeElement !== r.input) r.input.value = s[key];
       r.input.setAttribute('aria-label', name);
       r.minus.disabled = !GS.canNudge(s, key, -1);
@@ -369,26 +362,6 @@
       .observe(document.body);
   }
 
-  // VARIANT: test switch.
-  function renderVariant() {
-    document.documentElement.dataset.steps = variant.steps;
-    $('legend').hidden = variant.steps !== 'B';
-    $('scaleHint').hidden = variant.steps === 'B';
-    for (const seg of document.querySelectorAll('.seg')) {
-      for (const b of seg.children) b.setAttribute('aria-pressed', variant[seg.dataset.key] === b.dataset.v);
-    }
-  }
-  for (const seg of document.querySelectorAll('.seg')) {
-    seg.addEventListener('click', (e) => {
-      const b = e.target.closest('button');
-      if (!b) return;
-      variant = { ...variant, [seg.dataset.key]: b.dataset.v };
-      browser.storage.local.set({ devVariant: variant });
-      renderVariant();
-      render();
-    });
-  }
-
   buildRows();
   // Redraw when the page width changes (popup vs about:addons, window resize).
   let lastW = 0;
@@ -396,21 +369,14 @@
     const w = Math.round(scale.getBoundingClientRect().width);
     if (w && w !== lastW) { lastW = w; drawScale(drag || cfg); }
   }).observe(scale);
-  browser.storage.local.get(['settings', 'devVariant']).then((r) => {
+  browser.storage.local.get('settings').then((r) => {
     cfg = GS.normalize(r.settings);
-    if (r.devVariant) variant = { ...variant, ...r.devVariant };
-    renderVariant();
     render();
   });
   // Changes made in the player panel show up here live.
   browser.storage.onChanged.addListener((c) => {
     if (c.settings && !drag) {
       cfg = GS.normalize(c.settings.newValue);
-      render();
-    }
-    if (c.devVariant && c.devVariant.newValue) {
-      variant = { ...variant, ...c.devVariant.newValue };
-      renderVariant();
       render();
     }
   });

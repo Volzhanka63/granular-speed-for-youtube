@@ -187,64 +187,6 @@
 @keyframes ytsp-fade { from { opacity: 0; transform: translateY(-4px); } }
 @media (prefers-reduced-motion: reduce) { .ytsp-dialog { animation: none; } }
 
-/* First-run hint, pointing at the speed button. Fades with YouTube's controls. */
-.ytsp-hint {
-  position: absolute;
-  right: 12px;
-  z-index: 73;
-  width: 264px;
-  box-sizing: border-box;
-  padding: 12px 14px 10px;
-  border-radius: 12px;
-  background: rgba(28, 28, 28, .95);
-  color: #eee;
-  font: 400 13px/1.4 "YouTube Noto", Roboto, Arial, sans-serif;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, .35);
-  display: flex;
-  flex-direction: column;
-  transition: opacity .2s;
-}
-.ytsp-hint::after {
-  content: "";
-  position: absolute;
-  right: var(--arrow, 24px);
-  bottom: -6px;
-  width: 12px;
-  height: 12px;
-  background: inherit;
-  transform: rotate(45deg);
-  border-radius: 2px;
-}
-.ytsp-hint-up::after { bottom: auto; top: -6px; }
-.ytp-autohide .ytsp-hint { opacity: 0; pointer-events: none; }
-.ytsp-hint strong { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500; color: #fff; }
-.ytsp-hint p { margin: 0 0 8px; color: rgba(255, 255, 255, .8); }
-.ytsp-hint-keys { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 6px 10px; margin: 0 0 10px; color: rgba(255, 255, 255, .8); }
-.ytsp-hint kbd {
-  display: inline-block;
-  min-width: 18px;
-  padding: 1px 6px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, .16);
-  color: #fff;
-  font: 500 12px/18px "YouTube Noto", Roboto, Arial, sans-serif;
-  text-align: center;
-}
-.ytsp-hint-btn {
-  all: unset;
-  align-self: flex-end;
-  margin-top: 2px;
-  padding: 8px 14px;
-  border-radius: 16px;
-  background: #fff;
-  color: #0f0f0f;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-}
-.ytsp-hint-btn:hover { background: #e6e6e6; }
-.ytsp-hint-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-
 /* Hotkey feedback, in the spot where YouTube shows its own speed bubble */
 .ytsp-bezel {
   position: absolute;

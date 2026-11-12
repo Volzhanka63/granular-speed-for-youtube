@@ -12,10 +12,7 @@
   let bezel, bezelTimer, lastWheel = 0, live;
   let btn, panel, mainPage;
   let slider, display, presetsEl, slowerBtn, fasterBtn, presetEls = [];
-  let hint, hintDone = true; // one-time pointer to the speed button; true until storage says otherwise
-  let hintObserver;
   let overlay, frame; // full settings, shown over the page
-  let pos = 'corner'; // VARIANT: where full settings open ('corner' or 'button'), until one is picked
 
   // Press-and-hold on the video: YouTube plays at 2x while held; we play at
   // twice your speed instead (capped at Fastest), without saving it.
@@ -178,7 +175,6 @@
     const now = Date.now();
     if (now - lastWheel < 80) return; // trackpads fire many events per gesture
     lastWheel = now;
-    dismissHint();
     set(step(e.deltaY < 0 ? 1 : -1), true);
     announce('Speed ' + fmt(want));
   }
@@ -312,13 +308,7 @@
     }
     player = p;
     matchTimeDisplay();
-    if (hint) {
-      if (hint.parentNode !== p) p.append(hint);
-      hint.classList.toggle('ytsp-hint-up', shorts);
-      observeHint();
-    }
     render();
-    maybeHint();
   }
 
   function ensureUI() {
@@ -326,73 +316,6 @@
     for (const p of document.querySelectorAll('#shorts-player, #movie_player')) {
       if (visible(p)) { mount(p); if (visible(btn)) return; }
     }
-  }
-
-  // ---- First-run hint ----
-
-  // Above the button on a regular video; below it on Shorts, whose controls
-  // sit at the top.
-  function positionHint() {
-    if (!hint || !visible(btn)) return;
-    const p = player.getBoundingClientRect();
-    const b = btn.getBoundingClientRect();
-    if (hint.classList.contains('ytsp-hint-up')) {
-      hint.style.top = (b.bottom - p.top + 12) + 'px';
-      hint.style.bottom = '';
-    } else {
-      hint.style.bottom = (p.bottom - b.top + 12) + 'px';
-      hint.style.top = '';
-    }
-    // the caret is 12px wide, so its centre sits 6px in from its right offset
-    hint.style.setProperty('--arrow', Math.max(10, p.right - 12 - (b.left + b.width / 2) - 6) + 'px');
-  }
-
-  // YouTube lays out its control bar after we mount; re-aim when it settles or resizes.
-  function observeHint() {
-    if (hintObserver) hintObserver.disconnect();
-    hintObserver = new ResizeObserver(positionHint);
-    hintObserver.observe(btn.parentNode);
-    hintObserver.observe(player);
-    requestAnimationFrame(positionHint);
-  }
-
-  function maybeHint() {
-    if (hintDone || hint || !visible(btn)) return;
-    hint = el('div', 'ytsp-hint');
-    hint.setAttribute('role', 'note');
-    hint.classList.toggle('ytsp-hint-up', player.id === 'shorts-player');
-    const got = el('button', 'ytsp-hint-btn', 'Got it');
-    got.type = 'button';
-    got.addEventListener('click', dismissHint);
-    const kbd = (t) => el('kbd', null, t);
-    const keys = el('div', 'ytsp-hint-keys');
-    const line = (combo, what) => {
-      const c = el('span');
-      c.append(...combo.flatMap((k, i) => (i ? [' + ', kbd(k)] : [kbd(k)])));
-      keys.append(c, el('span', null, what));
-    };
-    line(['Shift', '.'], 'faster');
-    line(['Shift', ','], 'slower');
-    line(['R'], '1x and back');
-    hint.append(
-      el('strong', null, 'Your speed controls'),
-      el('p', null, 'Click this button for a slider and presets, or scroll over it. YouTube’s speed keys now go past 2x:'),
-      keys,
-      got,
-    );
-    stopAll(hint);
-    player.append(hint);
-    positionHint();
-    observeHint();
-  }
-
-  function dismissHint() {
-    if (hintDone) return;
-    hintDone = true;
-    if (hint) hint.remove();
-    if (hintObserver) hintObserver.disconnect();
-    hint = null;
-    browser.storage.local.set({ hintDone: true });
   }
 
   function render() {
@@ -409,7 +332,6 @@
       b.classList.toggle('ytsp-on', on);
       b.setAttribute('aria-pressed', on);
     });
-    positionHint();
   }
 
   function outside(e) {
@@ -438,7 +360,6 @@
   }
 
   function openPanel(fromKeyboard) {
-    dismissHint();
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
     fitPanel();
@@ -463,25 +384,13 @@
   const EXT_ORIGIN = new URL(browser.runtime.getURL('')).origin;
   let frameH = 560;
 
-  // VARIANT: 'corner' opens where the toolbar popup does (top right);
-  // 'button' rises from the speed button (drops below it on Shorts).
+  // Top right, where the toolbar popup opens.
   function placeSettings() {
     if (!overlay || overlay.hidden) return;
     const gap = 8;
-    const corner = { top: gap, right: gap, room: innerHeight - 2 * gap, above: false };
-    let at = corner;
-    if (pos === 'button' && visible(btn)) {
-      const b = btn.getBoundingClientRect();
-      const right = Math.max(gap, innerWidth - player.getBoundingClientRect().right + 12);
-      at = player.id === 'shorts-player'
-        ? { top: b.bottom + 12, right, room: innerHeight - b.bottom - 12 - gap, above: false }
-        : { bottom: b.top - 12, right, room: b.top - 12 - gap, above: true };
-      if (at.room < 320) at = corner; // not enough space next to the button
-    }
-    const h = Math.min(frameH, at.room);
-    frame.style.height = h + 'px';
-    overlay.style.right = at.right + 'px';
-    overlay.style.top = (at.above ? at.bottom - h : at.top) + 'px';
+    frame.style.height = Math.min(frameH, innerHeight - 2 * gap) + 'px';
+    overlay.style.top = gap + 'px';
+    overlay.style.right = gap + 'px';
   }
 
   function settingsOutside(e) {
@@ -575,7 +484,7 @@
 
   // ---- Press and hold on the video ----
 
-  const NOT_VIDEO = '.ytp-chrome-bottom, .ytp-chrome-top, .ytp-settings-menu, .ytp-popup, ytd-shorts-player-controls, .ytsp-panel, .ytsp-btn, .ytsp-hint, .ytsp-dialog';
+  const NOT_VIDEO = '.ytp-chrome-bottom, .ytp-chrome-top, .ytp-settings-menu, .ytp-popup, ytd-shorts-player-controls, .ytsp-panel, .ytsp-btn, .ytsp-dialog';
 
   function startHold() {
     clearTimeout(holdTimer);
@@ -631,27 +540,25 @@
 
     e.preventDefault();
     e.stopImmediatePropagation();
-    dismissHint();
     set(next);
   }, true);
 
   // ---- Startup ----
 
-  browser.storage.local.get(['want', 'last', 'settings', 'hintDone', 'devVariant']).then((s) => {
+  browser.storage.local.get(['want', 'last', 'settings']).then((s) => {
     if (Number.isFinite(s.want)) want = s.want;
     if (Number.isFinite(s.last)) last = s.last;
-    hintDone = s.hintDone === true;
-    if (s.devVariant && s.devVariant.pos) pos = s.devVariant.pos; // VARIANT
     applySettings(s.settings); // also clamps want/last and applies
     ensureUI();
-    maybeHint();
   });
+
+  // Leftovers from earlier versions: the first-run hint and the test switch.
+  browser.storage.local.remove(['hintDone', 'devVariant']);
 
   // Keep tabs in sync and pick up changes from any settings view.
   browser.storage.onChanged.addListener((c) => {
     if (c.settings) applySettings(c.settings.newValue);
     if (c.want && Number.isFinite(c.want.newValue)) { want = clamp(c.want.newValue); applyAll(); render(); }
     if (c.last && Number.isFinite(c.last.newValue)) last = clamp(c.last.newValue);
-    if (c.devVariant && c.devVariant.newValue) { pos = c.devVariant.newValue.pos || 'corner'; placeSettings(); } // VARIANT
   });
 })();
