@@ -16,7 +16,7 @@
 
     <section class="intro">
       <h1>YouTube now goes past 2×</h1>
-      <p class="lead">Pick the exact speed you can follow, from <span id="range">0.25× to 4×</span>, in steps you choose. This page takes about a minute.</p>
+      <p class="lead">Pick the exact speed you can follow, from <span id="range">0.25× to 4×</span>, in steps you choose. Here's how it works. It takes about two minutes to read.</p>
     </section>
 
     <section class="scale-card try" aria-labelledby="tryTitle">
@@ -33,24 +33,58 @@
       <p id="tryNote" class="hint"></p>
     </section>
 
-    <section class="group">
+    <section class="group" aria-labelledby="controlsTitle">
+      <h2 id="controlsTitle" class="section-title">Controls</h2>
       <div class="rows">
         <div class="how">
-          <h2 class="how-title">Keys on YouTube</h2>
+          <h3 class="how-title">Keys</h3>
           <ul class="keys">
             <li><span class="combo"><kbd>Shift</kbd> + <kbd>.</kbd></span> faster</li>
             <li><span class="combo"><kbd>Shift</kbd> + <kbd>,</kbd></span> slower</li>
             <li><span class="combo"><kbd>R</kbd></span> 1× and back to your speed</li>
           </ul>
-          <p class="how-note">These are YouTube’s own speed keys, now without the 2× limit. They work on any keyboard layout and stay quiet while you type a comment.</p>
+          <p class="how-note">These are YouTube’s own speed keys, now without the 2× limit. They work on any keyboard layout, and only when a video is on the page. While you type a comment or a search, they type as usual.</p>
         </div>
         <div class="how">
-          <h2 class="how-title">The speed button</h2>
-          <p>It shows your current speed in the player’s controls: bottom right on a regular video, top right on a Short. Scroll over it to step the speed. Click it for a slider and one-click presets.</p>
+          <h3 class="how-title">Hold the video for double speed</h3>
+          <p>Hold the mouse button down on the video and it plays at twice your speed, up to your fastest setting (<span id="holdMax">4×</span>). At 1.5× you get 3×. Let go and you’re back. YouTube’s own hold gives a flat 2×, which is slower than what you’re likely watching at, so the extension replaces it.</p>
         </div>
         <div class="how">
-          <h2 class="how-title">Your own steps</h2>
-          <p id="stepsText">Out of the box, speed moves 0.25× at a time up to 2×, then 0.1×. Change both step sizes, where steps change, the range and the presets with the tune icon in that panel, or the toolbar button.</p>
+          <h3 class="how-title">The speed button</h3>
+          <p>It shows your current speed in the player’s controls: bottom right on a regular video, top right on a Short. Scroll over it to step the speed. Click it for a slider and one-click presets. The tune icon in that panel opens all settings without leaving the video.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="logicTitle">
+      <h2 id="logicTitle" class="section-title">How it works</h2>
+      <div class="rows">
+        <div class="how">
+          <h3 class="how-title">Two step sizes</h3>
+          <p id="stepsText">Out of the box, speed moves 0.25× at a time up to 2×, then 0.1×. Near the top of what you can follow, a small change decides whether you keep up with the speaker, so the steps get smaller there. You choose both step sizes and where they change.</p>
+        </div>
+        <div class="how">
+          <h3 class="how-title">Your speed sticks</h3>
+          <p>YouTube resets the speed on every new video and ad. The extension puts yours back each time, so it carries over to the next video, other tabs and the next time you open Firefox. Hover previews in the feed stay at normal speed.</p>
+        </div>
+        <div class="how">
+          <h3 class="how-title">One speed control</h3>
+          <p>Because the extension keeps your speed, YouTube’s own speed menu can’t change it. Pick a speed there and a bubble shows the speed you’re really at. If you use another speed extension, turn it off for YouTube, or the two will undo each other.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="whereTitle">
+      <h2 id="whereTitle" class="section-title">Where it works</h2>
+      <div class="rows">
+        <div class="how">
+          <ul class="where">
+            <li class="yes">Regular videos on youtube.com, including theater mode, fullscreen and the miniplayer</li>
+            <li class="yes">Shorts</li>
+            <li class="part">Live streams. At the live edge there’s nothing ahead to speed through, so the extension leaves the speed to YouTube. Rewind and your speed applies again.</li>
+            <li class="no">YouTube Music, the mobile site, Firefox for Android, and YouTube videos embedded on other sites</li>
+          </ul>
+          <p id="audioNote" class="how-note" hidden>Firefox mutes the sound above 8×. To keep it, raise <code>media.audio.playbackrate.muting_threshold</code> in about:config.</p>
         </div>
       </div>
     </section>
@@ -60,7 +94,7 @@
       <button id="openSettings" class="btn" type="button">Open settings</button>
     </div>
 
-    <p class="privacy">No accounts, no analytics, no network requests. Your speed and settings stay in your Firefox profile.</p>
+    <p class="privacy">No accounts, no analytics, no network requests. The extension only has access to youtube.com, and your speed and settings stay in your Firefox profile.</p>
   </main>
   <script src="shared.js"></script>
   <script src="welcome.js"></script>

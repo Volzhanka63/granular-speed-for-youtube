@@ -102,10 +102,12 @@
     list = GS.speeds(cfg);
     if (speed < cfg.min || speed > cfg.max) speed = cfg.min > 1 ? cfg.min : cfg.max;
     $('range').textContent = fmt(cfg.min) + ' to ' + fmt(cfg.max);
+    $('holdMax').textContent = fmt(cfg.max);
+    $('audioNote').hidden = cfg.max <= 8;
     const d = GS.DEFAULTS;
     if (cfg.stepLow !== d.stepLow || cfg.stepHigh !== d.stepHigh || cfg.threshold !== d.threshold) {
       $('stepsText').textContent = 'With your settings, speed moves ' + cfg.stepLow + '× at a time up to ' + fmt(cfg.threshold) +
-        ', then ' + cfg.stepHigh + '×. Change it any time with the tune icon in the speed panel, or the toolbar button.';
+        ', then ' + cfg.stepHigh + '×. Near the top of what you can follow, a small change decides whether you keep up with the speaker, so the second step is usually the smaller one. You can change both, and where they change, in the settings.';
     }
     render();
   });

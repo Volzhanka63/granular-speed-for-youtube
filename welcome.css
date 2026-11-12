@@ -38,7 +38,8 @@
 /* How-to rows */
 .how { padding: 12px 0; border-top: 1px solid var(--line); }
 .rows .how:first-child { border-top: 0; padding-top: 8px; }
-.how-title { display: block; margin-bottom: 4px; font-weight: 600; }
+.section-title { margin: 2px 0 6px; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+.how-title { display: block; margin: 0 0 4px; font-size: 14px; font-weight: 600; }
 .how p { margin: 0; color: var(--muted); line-height: 1.5; max-width: 62ch; }
 .how .how-note { margin-top: 8px; font-size: 13px; }
 
@@ -82,3 +83,12 @@ kbd {
 .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
 .privacy { margin: 0; padding: 0 2px; color: var(--muted); font-size: 13px; }
+
+/* Where it works */
+.where { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--muted); line-height: 1.5; }
+.where li { position: relative; padding-left: 26px; }
+.where li::before { position: absolute; left: 2px; top: 0; width: 16px; text-align: center; font-weight: 700; }
+.where .yes::before { content: "✓"; color: var(--text); }
+.where .part::before { content: "~"; color: var(--accent-text); }
+.where .no::before { content: "✕"; color: var(--muted); font-weight: 500; }
+.how code { font-size: 12px; word-break: break-all; }
