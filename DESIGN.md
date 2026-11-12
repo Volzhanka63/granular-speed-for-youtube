@@ -6,8 +6,8 @@ colors:
   amber-ink: "#1d1404"
   amber-text-light: "#8a5300"
   amber-text-dark: "#ffc24f"
-  amber-focus-light: "#e89a00"
-  amber-fine-light: "#d48700"
+  amber-focus-light: "#a86400"
+  amber-fine-light: "#b06f00"
   cool-grey-bg: "#e7e8eb"
   white-surface: "#ffffff"
   cool-grey-line: "#dcdee2"
@@ -16,7 +16,7 @@ colors:
   control-light: "#eff0f2"
   control-light-hover: "#e4e6e9"
   control-light-active: "#d9dbdf"
-  tick-light: "#a5a9b1"
+  tick-light: "#858a93"
   tick-major-light: "#33363c"
   graphite-bg: "#111214"
   graphite-surface: "#1b1c20"
@@ -26,7 +26,7 @@ colors:
   control-dark: "#26282d"
   control-dark-hover: "#30333a"
   control-dark-active: "#3a3d45"
-  tick-dark: "#5b6069"
+  tick-dark: "#6b7079"
   tick-major-dark: "#d3d6db"
   icon-graphite: "#16181d"
   player-panel: "rgba(0, 0, 0, .6)"
@@ -39,7 +39,6 @@ colors:
   player-white: "#ffffff"
   player-secondary: "rgba(255, 255, 255, .7)"
   player-on-ink: "#0f0f0f"
-  player-tooltip: "rgba(28, 28, 28, .95)"
 typography:
   ext-body:
     fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
@@ -203,9 +202,11 @@ components:
 
 **Creative North Star: "The Instrument Cluster, with a native passenger"**
 
-The product has two visual languages, and which one applies depends on where the surface lives. Extension pages (the settings page, shown in the toolbar popup and in about:addons, and the welcome page opened on install) belong to the icon's world. That world is an instrument cluster: graphite at night, cool grey and white by day, and one amber that lights only what is live. The settings page treats speed as a single instrument reading. A drawn speed scale shows every reachable speed as a tick, the fine-step zone is washed in amber, and an amber switch-point needle can be dragged. Round steppers and fixed-width numeral cells sit under the scale.
+The product has two visual languages, and which one applies depends on where the surface lives. Extension pages (the settings page, shown in the toolbar popup and in about:addons, and the welcome page opened on install) belong to the icon's world. That world is an instrument cluster: graphite at night, cool grey and white by day, and one amber that lights only what is live. The settings page treats speed as a single instrument reading. A drawn speed scale shows every reachable speed as a tick, the fine-step zone is washed in amber, and an amber ▲ marker for where steps change can be dragged. Round steppers and fixed-width numeral cells sit under the scale.
 
-Inside the YouTube player (the speed button, the speed panel and its settings page, the hotkey bezel and the first-run hint), the extension's brand is absent. Those surfaces copy YouTube's own settings menu and playback-speed submenu as measured: a 60% black panel, 12px corners, 330px width, 40px header, 48px rows, and 32px round controls and chips, all set in YouTube Noto. A user should take them for a player setting, not an overlay.
+Inside the YouTube player (the speed button, the speed panel and the speed bubble), the extension's brand is absent. Those surfaces copy YouTube's own settings menu and playback-speed submenu as measured: a 60% black panel, 12px corners, 330px width, 40px header, 48px rows, and 32px round controls and chips, all set in YouTube Noto. A user should take them for a player setting, not an overlay.
+
+The one surface that crosses over is the full settings window opened from the player panel. It is the extension's settings page in an iframe, so it keeps the extension's look (see The Window Rule).
 
 Density is compact on both sides: 48px rows and small controls, with no decorative surfaces. Copy is plain.
 
@@ -225,7 +226,7 @@ Extension pages use neutral graphite and cool grey with one warm amber signal. T
 - **Gauge Amber** (amber): the switch-point needle and its head (dark theme), the fine-step tick colour (dark theme), the fine-zone wash at 16% / 10% alpha, the primary button fill, the text-selection fill, and the flash ring on a value that was corrected. It is the same in both themes.
 - **Amber Ink** (amber-ink): text on an amber fill.
 - **Burnt Amber Text** (amber-text-light) / **Pale Amber Text** (amber-text-dark): the needle's value label, wherever amber has to be read as text. On the light theme, raw amber is too low-contrast for text on white.
-- **Deep Amber** (amber-focus-light, amber-fine-light): the light-theme versions of the focus ring, needle and fine ticks, darkened so they stay visible on white.
+- **Deep Amber** (amber-focus-light, amber-fine-light): light-theme focus ring (#a86400, 4.7:1 on white) and fine ticks (#b06f00), darkened so they stay visible on white. The needle stays #e89a00.
 
 ### Neutral
 - **Cool Grey / White** (cool-grey-bg, white-surface, cool-grey-line): light-theme page, card and row-divider colours.
@@ -241,12 +242,13 @@ Extension pages use neutral graphite and cool grey with one warm amber signal. T
 - **Translucent White controls** (player-control, -hover, -active): round buttons and chips.
 - **Player whites** (player-text, player-white, player-secondary): body text, controls and labels, and the summary, text buttons and settings icon at reduced opacity.
 - **Selected state**: a solid white chip (player-white) with near-black text (player-on-ink), matching YouTube's selected chips.
-- **Tooltip Charcoal** (player-tooltip): the first-run hint bubble only.
 
 ### Named Rules
 **The Live Value Rule.** Amber marks only things that are live or actionable: the fine-step zone, the switch-point needle and its label, the primary action, focus, and the "corrected" flash. Static labels, headings, chrome and decoration never use it.
 
 **The Native Passenger Rule.** No extension brand colour appears inside the YouTube player. In-player UI uses only translucent black, translucent white, solid white and #0f0f0f.
+
+**The Window Rule.** Full settings are a separate window, not part of the player, so they keep the extension's look even over the video and in fullscreen. The window opens where the toolbar popup does: 8px from the top-right corner of the viewport, 400px wide, no dimming behind it. A click outside or Esc closes it, and keyboard focus stays inside while it is open.
 
 ## Typography
 
@@ -259,6 +261,7 @@ Extension pages use neutral graphite and cool grey with one warm amber signal. T
 - **Welcome display** (750, 28px, 1.15, -0.02em, balanced wrap): the welcome page headline only.
 - **Welcome readout** (750, 40px, tabular): the speed number in the welcome demo.
 - **Welcome lead** (400, 16px, 1.5, max 52ch): the intro paragraph on the welcome page.
+- **Welcome section** (700, 17px, -0.01em): card titles on the welcome page ("Controls", "How it works", "Where it works").
 - **Title** (650, 15px): the product name in the page header.
 - **Section** (600, 14px): card headings, and the numbers in value cells and chips.
 - **Body** (400, 14px, 1.4, tabular numerals on the whole page): row labels, how-to text (max 62ch).
@@ -281,19 +284,19 @@ Extension pages use neutral graphite and cool grey with one warm amber signal. T
 
 ## Layout
 
-Extension pages use a single centred column: max 520px for settings and 600px for welcome, with a minimum body width of 360px so the toolbar popup works. Cards stack 12px apart (16px on welcome). Inside a card, settings are rows at least 48px tall, divided by 1px rules: label on the left, stepper on the right. The first view on the settings page is the header, then the speed-scale card with its count, then Steps.
+Extension pages use a single centred column: max 520px for settings and 600px for welcome, with a minimum body width of 360px so the toolbar popup works. Cards stack 12px apart (16px on welcome). Inside a card, settings are rows at least 48px tall, divided by 1px rules: label on the left, stepper on the right. The first view on the settings page is the header, then the speed-scale card with its one-line legend, then Steps.
 
-The in-player panel is absolutely positioned at 330px wide. It has a sticky 40px header, a main page with 24/16/16px padding and a 16px vertical gap, and a settings page of 48px rows inset 16px left and 12px right. Presets sit in an equal-column grid (`--cols`, default 6) with an 8px gap. Every in-player dimension is written as `calc(Npx * var(--s))`.
+The in-player panel is absolutely positioned at 330px wide. It has a sticky 40px header and a main page with 24/16/16px padding and a 16px vertical gap. It never gets wider than the player minus 24px. Presets sit in an equal-column grid (`--cols`, default 6) with an 8px gap; below 320px they wrap into 52px columns. Every in-player dimension is written as `calc(Npx * var(--s))`.
 
 ## Elevation & Depth
 
-Extension pages are nearly flat. Cards lift slightly off the page with a soft ambient shadow, and nothing else carries a shadow. In dark mode, depth comes mostly from the step between page (#111214) and card (#1b1c20). Inside the player, depth comes from translucency over video. The only shadows there are YouTube-matching text shadows, the slider thumb, and the first-run hint bubble.
+Extension pages are nearly flat. Cards lift slightly off the page with a soft ambient shadow, and nothing else carries a shadow. In dark mode, depth comes mostly from the step between page (#111214) and card (#1b1c20). Inside the player, depth comes from translucency over video. The only shadows there are YouTube-matching text shadows and the slider thumb. The settings window, which belongs to the extension's world, floats on its own shadow.
 
 ### Shadow Vocabulary
 - **Card, light** (`0 1px 2px rgba(20,22,26,.06), 0 2px 8px rgba(20,22,26,.05)`).
 - **Card, dark** (`0 1px 0 rgba(255,255,255,.03) inset, 0 2px 10px rgba(0,0,0,.35)`).
 - **Player text** (`text-shadow: 0 0 2px rgba(0,0,0,.5)` on panel and bezel; `0 0 2px #000` on the speed button).
-- **Player hint** (`0 4px 16px rgba(0,0,0,.35)`).
+- **Settings window** (`0 12px 40px rgba(0,0,0,.45)` plus a 1px 8% white ring, so it separates from dark video).
 
 ## Shapes
 
@@ -305,31 +308,40 @@ The form language is round. Both worlds share it, so they feel related without s
 - **Primary** (extension): amber pill, amber-ink text, weight 650. Hover brightens to 1.06. Used for "Add" in settings and "Open YouTube" on welcome. One per view.
 - **Secondary** (welcome): control-grey pill, 40px tall, weight 600; hover moves to the next control grey.
 - **Text link**: muted text with a 45% underline offset 3px. Hover switches to full text colour and a full underline. Used in the footer.
-- **Focus**: `outline: 2px solid` focus amber, offset 2px.
+- **Undo**: a 600-weight amber-text link next to the status in the header, shown for 5 seconds after Reset or removing a preset.
+- **Focus**: `outline: 2px solid` focus amber, offset 2px, on buttons and links.
 
 ### Steppers and value cells (extension signature)
 - 34px round minus/plus buttons (40px in the welcome demo), 4px apart, around a pill value cell with a transparent fill. Hover and active step through the control greys. Disabled buttons drop to 45% opacity.
 - Focus inside the cell shows a 2px focus-amber ring. A value clamped by the app flashes a 2px amber ring for 1.4s, so corrections are visible where they happen.
 
 ### Speed scale (extension signature)
-- An SVG drawn by options.js: one tick per reachable speed (major ticks darker and thicker), an amber fine-step zone wash (rx 3), preset speeds shown as 3px muted rings, and a 2px amber needle with a triangular head and a 650-weight value label. The needle can be dragged and moved with the arrow keys. Its focus shows an amber wash on the hit area.
+- An SVG drawn by options.js: one tick per reachable speed (major ticks darker and thicker), an amber fine-step zone wash (rx 3), preset speeds shown as 3px muted rings, and a 2px amber needle with a triangular head and a 650-weight value label. Only the marker can be dragged; a click elsewhere on the scale does nothing. Arrow keys move it. Its focus shows an amber wash and a 2px focus-amber ring on the hit area.
+- A one-line legend sits under the scale: an amber swatch for the second step size ("0.1× steps"), a ring for "preset", and the ▲ for "drag to move". A hidden sentence describes the scale for screen readers.
+- Rows: "Each press below 2×", "Steps change at", "Each press above 2×", then Slowest and Fastest. One name for the idea everywhere: where steps change. When the marker sits at an end, the row for the empty side dims to 50% with "not used".
 
 ### Chips (extension)
 - 32px control-grey pills with a 600-weight number and a muted 15px close icon that darkens to text colour on hover. Wrapping row, 8px gap.
+- A preset outside the current range stays saved and shows as an outlined muted chip (transparent fill, 1px line ring, weight 500). The player hides it until the range includes it again.
+- Preset errors appear in 13px text right under the Add field, marked with an amber "!", and clear as you type.
 
 ### Player speed button
-- Sits in YouTube's right controls with no fill, white 500/14px YouTube Noto, at least 48px wide, styled like the time display. On Shorts it is a 48px pill with a 10% white hover.
+- Sits first in YouTube's right controls with no fill, white 500 YouTube Noto, at least 48px wide, styled like the time display. Its font size is copied from the time display at mount and on fullscreen changes, so it grows with big mode. On Shorts it is a 48px pill with a 10% white hover.
+- Tooltip: "Playback speed (Shift+. / Shift+,), scroll to change". Screen readers hear "Playback speed 2.3x" and whether the panel is open.
 
 ### Player panel
-- 60% black, 12px corners, 330px. Header 40px with a 35% black wash, a 1px 20% white rule, and a 12px/500 title, with back and settings as transparent round buttons. The page enters with a 160ms slide-and-fade (`cubic-bezier(.2,.8,.2,1)`); reduced motion turns it off.
-- **Round buttons:** 32px (28px small variant in settings rows), 10% white, 20% on hover, 28% when pressed. Disabled at 35%.
-- **Chips:** 32px, 16px corners, 10% white. Selected is solid white with #0f0f0f text. The "Add" chip has a 1px inset 35% white outline on a transparent fill.
+- 60% black, 12px corners, 330px. Header 40px with a 35% black wash, a 1px 20% white rule, and a 12px/500 title, with the tune icon (all settings) as a transparent round button.
+- **Round buttons:** 32px, 10% white, 20% on hover, 28% when pressed. Disabled at 35%: − at the slowest speed, + at the fastest.
+- **Chips:** 32px, 16px corners, 10% white. Selected is solid white with #0f0f0f text.
+- **Keyboard:** opening the panel from the keyboard moves focus to the slider; Esc closes it and returns focus to the button.
 - **Slider:** 4px track at 30% white, white progress, 14px white thumb.
 - **Focus:** 2px solid white outline.
 
-### Player hint and bezel
-- **Hint:** 264px charcoal bubble with 12px corners, an arrow pointing at the speed button, and a white "Got it" pill. It fades with YouTube's autohide.
-- **Bezel:** 60% black pill-ish box (12px corners) with 500/18px white text, at 10% from the top and centred.
+### Speed bubble
+- 60% black box (12px corners) with 500/18px white text, at 10% from the top and centred, where YouTube shows its own. It shows for 700ms after a hotkey, and when YouTube's own speed menu tries to change the speed. While you hold the video for double speed it stays up with the doubled speed, and YouTube's own "2x" overlay is hidden.
+- Each change is also written to a hidden polite live region for screen readers.
+
+There is no first-run hint inside the player. The welcome page explains the controls.
 
 ## Do's and Don'ts
 

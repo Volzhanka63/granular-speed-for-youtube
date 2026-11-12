@@ -38,6 +38,8 @@ The tune icon in the player panel opens the full settings over the video, like t
 
 ![Settings](listing/screenshot-settings.png)
 
+![Speed panel on a Short](listing/screenshot-shorts.png)
+
 ## Privacy
 
 The extension makes no network requests and collects nothing. It stores your current speed and your settings in `browser.storage.local`, inside your Firefox profile. Its only permission is `storage`, and it only runs on `www.youtube.com`.
