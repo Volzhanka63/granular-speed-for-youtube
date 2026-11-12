@@ -5,7 +5,7 @@ Not packaged. Apply with `gh` after approval.
 **Description**
 
 ```
-Firefox extension: YouTube past 2x, from the keyboard, in steps you choose. YouTube's own speed keys, a player button, Shorts. No data collection.
+Firefox extension: YouTube past 2x, from the keyboard, in steps you choose. The same speed keys, a button in the player, Shorts support. Collects no data.
 ```
 
 **Website** (once the AMO page is public)
@@ -24,7 +24,7 @@ Commands:
 
 ```sh
 gh repo edit Volzhanka63/granular-speed-for-youtube \
-  --description "Firefox extension: YouTube past 2x, from the keyboard, in steps you choose. YouTube's own speed keys, a player button, Shorts. No data collection." \
+  --description "Firefox extension: YouTube past 2x, from the keyboard, in steps you choose. The same speed keys, a button in the player, Shorts support. Collects no data." \
   --add-topic firefox-addon,youtube-speed,video-speed,hotkeys,youtube-shorts,manifest-v3
 gh repo edit Volzhanka63/granular-speed-for-youtube --homepage https://addons.mozilla.org/firefox/addon/granular-speed-for-youtube/
 ```

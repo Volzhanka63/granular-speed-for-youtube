@@ -4,34 +4,39 @@
 
 **Added**
 
-- Hold the mouse down on the video to play at twice your speed, up to your fastest setting. At 1.5x you get 3x. Let go and you're back. This replaces YouTube's own hold, which gives a flat 2x, and hides YouTube's "2x" overlay while you hold.
+- Hold the mouse button down on the video to play at twice your speed, up to your fastest setting. At 1.5x you get 3x. Let go and you're back. When the hold hits your fastest speed, the bubble says so: "4x · fastest". This replaces YouTube's own hold, which always gives 2x, and hides YouTube's "2x" overlay while you hold.
 - When YouTube's own speed menu tries to change the speed, the speed bubble shows the speed you're really at.
-- Undo for "Reset to defaults" and for removing a preset, for 5 seconds.
+- At the live edge of a live stream the extension leaves the speed to YouTube. Go back a bit and your speed applies again.
+- If another speed add-on keeps resetting the speed, this one pauses for 3 seconds instead of looping, then sets your speed again. Your own key presses never cause the pause.
+- Undo for "Reset to defaults" and for removing presets, for 5 seconds. Remove several presets in a row and one Undo brings them all back.
 - A legend under the speed scale, a description of the scale for screen readers, and a "Rate this add-on" link in the settings footer.
+- A note in the settings explains outlined presets. They're outside your range, so the player hides them.
 - The welcome page now explains hold for double, how the extension keeps your speed, and where it works.
 
 **Changed**
 
 - Full settings from the player panel open in the top-right corner, like the toolbar popup, without dimming the video. A click outside or Esc closes them.
-- Settings rows are renamed so one idea has one name: "Each press below 2×", "Steps change at", "Each press above 2×". When the switch point sits at an end, the unused step row dims.
+- Settings rows are renamed so one idea has one name: "Each press below 2×", "Steps change at", "Each press above 2×". When steps change at the slowest or fastest speed, the step row that has nothing to do dims and says "not used".
 - Only the marker on the speed scale can be dragged. A stray click on the scale no longer changes the setting.
-- Speed keys only act when a video is on the page. On the home page and in search they stay YouTube's.
+- Speed keys only act when a video is on the page. On the home page and in search they no longer change your speed.
 - Presets outside your range are kept and hidden in the player, instead of deleted. Widen the range and they come back.
+- All 6 default presets fit on one row in the toolbar popup.
 - Preset errors show under the Add field instead of flashing in the header.
 - On a fresh install, R goes from 1x to your first preset above 1x instead of doing nothing.
 - The speed button follows the time display's size in large fullscreen. Its tooltip shows the keys.
 - The player panel never gets wider than the player, so it isn't cut off on small Shorts.
-- At the live edge of a live stream the extension leaves the speed to YouTube. If another extension keeps resetting the speed, this one backs off for 3 seconds instead of looping.
 - The first-run hint in the player is gone. The welcome page covers the same ground.
 
 **Accessibility**
 
 - Visible focus in the light theme (darker amber) and on links and the scale marker. Easier-to-see ticks on the scale.
 - The player panel takes focus when opened from the keyboard and gives it back on Esc. Screen readers hear the current speed, whether the panel is open, and speed changes from the keys and the scroll wheel.
+- Screen readers and voice control use the same names as the visible settings labels.
 - Keyboard focus stays inside the full settings window while it's open.
 
 **Fixed**
 
+- A click outside the full settings closed them and also reached the page, so it could pause the video or follow a link. Now it only closes them.
 - The whole-number marks on the settings scale weren't drawn darker.
 - A − or + button could move a typed value the wrong way when it was beyond the usual steps.
 - Clearing a settings field reset it to the default instead of the value it had.

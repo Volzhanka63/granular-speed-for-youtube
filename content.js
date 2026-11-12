@@ -256,7 +256,7 @@
   function buildUI() {
     btn = el('button', 'ytsp-btn');
     btn.type = 'button';
-    btn.title = 'Playback speed (Shift+. / Shift+,), scroll to change';
+    btn.title = 'Playback speed. Shift+. faster, Shift+, slower, or scroll';
     btn.setAttribute('aria-haspopup', 'dialog');
     btn.setAttribute('aria-expanded', 'false');
     btn.addEventListener('click', (e) => {
