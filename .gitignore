@@ -7,3 +7,6 @@ node_modules/
 
 # Impeccable design-hook cache (machine-local)
 .impeccable/hook.cache.json
+
+# Local session notes (personal setup, release steps)
+HANDOFF.md
