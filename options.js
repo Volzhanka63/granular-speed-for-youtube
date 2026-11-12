@@ -13,8 +13,22 @@
   const compact = view !== 'page';
 
   let cfg = GS.normalize();
-  let statusTimer;
+  let statusTimer, undoCfg = null;
   const rows = {};
+
+  // VARIANT: two wordings for the step settings, until one is picked.
+  // A reads as one sentence down the rows; B names each row and adds a legend.
+  let variant = { steps: 'A', pos: 'corner' };
+  const LABELS = {
+    A: { stepLow: () => 'Change speed by', threshold: () => 'up to', stepHigh: () => 'then by', min: () => 'From', max: () => 'to' },
+    B: {
+      stepLow: (s) => 'Each press below ' + fmt(s.threshold),
+      threshold: () => 'Steps change at',
+      stepHigh: (s) => 'Each press above ' + fmt(s.threshold),
+      min: () => 'Slowest',
+      max: () => 'Fastest',
+    },
+  };
 
   // ---- small DOM helpers ----
 
@@ -34,19 +48,30 @@
   const PLUS = 'M12 6v12M6 12h12';
   const CLOSE = 'M7 7l10 10M17 7L7 17';
 
-  function flash(text) {
+  // Status in the header. With `undo`, an Undo button stays for 5 seconds.
+  function flash(text, undo = null) {
     const s = $('status');
     s.textContent = text;
     s.classList.add('on');
+    undoCfg = undo;
+    $('undo').hidden = !undo;
     clearTimeout(statusTimer);
-    statusTimer = setTimeout(() => s.classList.remove('on'), 1600);
+    statusTimer = setTimeout(() => {
+      s.classList.remove('on');
+      $('undo').hidden = true;
+      undoCfg = null;
+    }, undo ? 5000 : 1600);
   }
 
-  function save(next, msg = 'Saved') {
+  function save(next, msg = 'Saved', undo = null) {
     cfg = next;
     render();
-    browser.storage.local.set({ settings: next }).then(() => flash(msg));
+    browser.storage.local.set({ settings: next }).then(() => flash(msg, undo));
   }
+
+  $('undo').addEventListener('click', () => {
+    if (undoCfg) save(undoCfg, 'Restored');
+  });
 
   // ---- stepper rows ----
 
@@ -57,6 +82,11 @@
       const id = 'v-' + f.key;
       const label = document.createElement('label');
       label.htmlFor = id;
+      const text = document.createElement('span');
+      const idle = document.createElement('span');
+      idle.className = 'idle-note';
+      idle.textContent = 'not used';
+      label.append(text, idle);
       const stepper = document.createElement('div');
       stepper.className = 'stepper';
       const minus = document.createElement('button');
@@ -87,12 +117,16 @@
       plus.addEventListener('click', () => save(GS.nudge(cfg, f.key, 1)));
       input.addEventListener('change', () => {
         const typed = parseFloat(input.value);
-        const next = GS.normalize({ ...cfg, [f.key]: typed });
-        const adjusted = !(typed === next[f.key]);
-        save(next, adjusted ? 'Adjusted to fit' : 'Saved');
-        if (adjusted) markAdjusted(row);
+        // A cleared or unreadable field goes back to what it was.
+        if (!Number.isFinite(typed)) { input.value = cfg[f.key]; return; }
+        const asked = { ...cfg, [f.key]: typed };
+        const next = GS.normalize(asked);
+        // Mark every value that had to move, not only the one typed into.
+        const moved = GS.FIELDS.filter(({ key }) => next[key] !== asked[key]).map(({ key }) => key);
+        save(next, moved.length ? 'Adjusted to fit' : 'Saved');
+        for (const key of moved) markAdjusted(rows[key].row);
       });
-      rows[f.key] = { f, row, label, input, minus, plus };
+      rows[f.key] = { f, row, text, input, minus, plus };
     }
   }
 
@@ -105,18 +139,31 @@
 
   // ---- presets ----
 
+  function presetError(text) {
+    const e = $('presetError');
+    e.textContent = text;
+    e.hidden = !text;
+  }
+
   function renderChips() {
     const box = $('chips');
     box.textContent = '';
     for (const p of cfg.presets) {
+      // Presets outside the range stay saved but the player hides them.
+      const off = p < cfg.min || p > cfg.max;
       const chip = document.createElement('button');
       chip.type = 'button';
-      chip.className = 'chip';
-      chip.setAttribute('aria-label', 'Remove preset ' + fmt(p));
+      chip.className = 'chip' + (off ? ' off' : '');
+      chip.setAttribute('aria-label', 'Remove preset ' + fmt(p) + (off ? ' (outside your range, hidden in the player)' : ''));
+      if (off) chip.title = 'Outside your range, so the player hides it';
       const t = document.createElement('span');
       t.textContent = fmt(p);
       chip.append(t, icon(CLOSE));
-      chip.addEventListener('click', () => save(GS.withoutPreset(cfg, p), 'Removed ' + fmt(p)));
+      chip.addEventListener('click', () => {
+        const prev = cfg;
+        save(GS.withoutPreset(cfg, p), 'Removed ' + fmt(p), prev);
+        requestAnimationFrame(() => (box.querySelector('.chip') || $('addInput')).focus());
+      });
       box.append(chip);
     }
     if (!cfg.presets.length) {
@@ -129,21 +176,20 @@
     const full = cfg.presets.length >= GS.LIMITS.presets;
     $('addForm').hidden = full;
     $('presetNote').hidden = !full;
+    if (full) presetError('');
   }
 
+  $('addInput').addEventListener('input', () => presetError(''));
   $('addForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const v = GS.r2(parseFloat($('addInput').value));
-    if (!Number.isFinite(v)) return;
-    if (v < cfg.min || v > cfg.max) {
-      flash(fmt(v) + ' is outside ' + fmt(cfg.min) + ' to ' + fmt(cfg.max));
-      return;
-    }
-    if (cfg.presets.includes(v)) {
-      flash(fmt(v) + ' is already a preset');
-      return;
-    }
+    const raw = $('addInput').value.trim();
+    if (!raw) return;
+    const v = GS.r2(parseFloat(raw));
+    if (!Number.isFinite(v)) { presetError('Type a speed, like 2.3'); return; }
+    if (v < cfg.min || v > cfg.max) { presetError(fmt(v) + ' is outside your range, ' + fmt(cfg.min) + ' to ' + fmt(cfg.max)); return; }
+    if (cfg.presets.includes(v)) { presetError(fmt(v) + ' is already a preset'); return; }
     $('addInput').value = '';
+    presetError('');
     save(GS.withPreset(cfg, v), 'Added ' + fmt(v));
   });
 
@@ -163,21 +209,22 @@
     const x = (v) => pad + ((v - s.min) / span) * (W - 2 * pad);
     const list = GS.speeds(s);
     const base = compact ? 40 : 46;
+    const MAJOR = 22;
     const len = (v) => {
-      if (Number.isInteger(v) || v === s.min || v === s.max) return 22;
+      if (Number.isInteger(v) || v === s.min || v === s.max) return MAJOR;
       if (Number.isInteger(v * 2)) return 15;
       return 9;
     };
 
-    // fine-step zone above the switch point
+    // zone above the switch point, where the second step size applies
     svgEl('rect', { class: 'zone', x: x(s.threshold), y: base - 26, width: x(s.max) - x(s.threshold), height: 28, rx: 3 }, scale);
     svgEl('line', { class: 'base', x1: pad - 6, x2: W - pad + 6, y1: base + 0.5, y2: base + 0.5 }, scale);
     for (const v of list) {
-      const cls = 'tick' + (v > s.threshold + 1e-9 ? ' fine' : '') + (len(v) === 20 ? ' major' : '');
+      const cls = 'tick' + (v > s.threshold + 1e-9 ? ' fine' : '') + (len(v) === MAJOR ? ' major' : '');
       const X = x(v);
       svgEl('line', { class: cls, x1: X, x2: X, y1: base, y2: base - len(v) }, scale);
     }
-    for (const p of s.presets) svgEl('circle', { class: 'preset', cx: x(p), cy: base - 28, r: 3 }, scale);
+    for (const p of GS.activePresets(s)) svgEl('circle', { class: 'preset', cx: x(p), cy: base - 28, r: 3 }, scale);
 
     // labels: ends, 1×, then whole speeds as room allows; never on top of the marker
     const labelY = base + (compact ? 17 : 19);
@@ -194,10 +241,10 @@
       t.textContent = String(v);
     }
 
-    // switch-point marker
+    // marker for where steps change; the only part of the scale you can drag
     const mx = x(s.threshold);
-    const g = svgEl('g', { class: 'marker', tabindex: 0, role: 'slider', 'aria-label': 'Step size changes at', 'aria-valuemin': s.min, 'aria-valuemax': s.max, 'aria-valuenow': s.threshold, 'aria-valuetext': fmt(s.threshold) }, scale);
-    svgEl('rect', { class: 'hit', x: mx - 14, y: 0, width: 28, height: H }, g);
+    const g = svgEl('g', { class: 'marker', tabindex: 0, role: 'slider', 'aria-label': 'Where steps change', 'aria-valuemin': s.min, 'aria-valuemax': s.max, 'aria-valuenow': s.threshold, 'aria-valuetext': fmt(s.threshold) }, scale);
+    svgEl('rect', { class: 'hit', x: mx - 14, y: 1, width: 28, height: H - 2, rx: 6 }, g);
     svgEl('line', { class: 'needle', x1: mx, x2: mx, y1: base - 32, y2: base + 2 }, g);
     svgEl('path', { class: 'head', d: `M${mx} ${base + 3} L${mx + 6} ${base + 11} L${mx - 6} ${base + 11} Z` }, g);
     const t = svgEl('text', { class: 'mlabel', x: mx, y: base - 36, 'text-anchor': 'middle' }, g);
@@ -207,6 +254,31 @@
     scale.dataset.max = s.max;
     scale.dataset.pad = pad;
     scale.dataset.w = W;
+
+    // The same picture in words, for screen readers.
+    const below = s.threshold > s.min ? fmt(s.min) + ' to ' + fmt(s.threshold) + ' by ' + fmt(s.stepLow) : '';
+    const above = s.threshold < s.max ? (below ? 'then ' : fmt(s.threshold) + ' ') + 'to ' + fmt(s.max) + ' by ' + fmt(s.stepHigh) : '';
+    $('scaleSummary').textContent = list.length + ' speeds: ' + [below, above].filter(Boolean).join(', ') + '.';
+    renderLegend(s);
+  }
+
+  // VARIANT B: a one-line key under the scale.
+  function renderLegend(s) {
+    const lg = $('legend');
+    lg.textContent = '';
+    if (variant.steps !== 'B') return;
+    const item = (cls, text) => {
+      const i = document.createElement('span');
+      i.className = 'key';
+      const sw = document.createElement('span');
+      sw.className = 'sw ' + cls;
+      sw.setAttribute('aria-hidden', 'true');
+      i.append(sw, text);
+      lg.append(i);
+    };
+    if (s.threshold < s.max) item('sw-zone', fmt(s.stepHigh) + ' steps');
+    if (GS.activePresets(s).length) item('sw-preset', 'preset');
+    item('sw-marker', 'drag to move');
   }
 
   function valueAt(clientX) {
@@ -218,6 +290,7 @@
   }
 
   scale.addEventListener('pointerdown', (e) => {
+    if (!e.target.closest('.marker')) return; // a stray click on the scale changes nothing
     scale.setPointerCapture(e.pointerId);
     drag = GS.normalize({ ...cfg, threshold: valueAt(e.clientX) });
     renderPreview(drag);
@@ -250,15 +323,21 @@
   // ---- render ----
 
   function renderRows(s) {
+    const L = LABELS[variant.steps];
     for (const key in rows) {
       const r = rows[key];
-      r.label.textContent = r.f.label(s);
+      const name = r.f.name(s);
+      r.text.textContent = L[key](s);
       if (document.activeElement !== r.input) r.input.value = s[key];
+      r.input.setAttribute('aria-label', name);
       r.minus.disabled = !GS.canNudge(s, key, -1);
       r.plus.disabled = !GS.canNudge(s, key, 1);
-      r.minus.setAttribute('aria-label', 'Decrease ' + r.label.textContent.toLowerCase());
-      r.plus.setAttribute('aria-label', 'Increase ' + r.label.textContent.toLowerCase());
+      r.minus.setAttribute('aria-label', 'Decrease ' + name.toLowerCase());
+      r.plus.setAttribute('aria-label', 'Increase ' + name.toLowerCase());
     }
+    // With the switch point at an end, one step size has nothing to act on.
+    rows.stepLow.row.classList.toggle('idle', s.threshold <= s.min);
+    rows.stepHigh.row.classList.toggle('idle', s.threshold >= s.max);
     $('audioNote').hidden = s.max <= 8;
   }
 
@@ -272,18 +351,42 @@
     renderChips();
   }
 
-  $('reset').addEventListener('click', () => save(GS.normalize(), 'Defaults restored'));
+  $('reset').addEventListener('click', () => {
+    const prev = cfg;
+    save(GS.normalize(), 'Defaults restored', prev);
+  });
 
   // Shown over YouTube: tell the player script our height, and let it close us.
   if (view === 'overlay') {
-    const close = () => parent.postMessage({ ytsp: 'close' }, '*');
+    const YT = 'https://www.youtube.com';
+    const close = () => parent.postMessage({ ytsp: 'close' }, YT);
     const btn = $('close');
     btn.hidden = false;
     btn.append(icon(CLOSE));
     btn.addEventListener('click', close);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-    new ResizeObserver(() => parent.postMessage({ ytsp: 'size', h: document.documentElement.scrollHeight }, '*'))
+    new ResizeObserver(() => parent.postMessage({ ytsp: 'size', h: document.documentElement.scrollHeight }, YT))
       .observe(document.body);
+  }
+
+  // VARIANT: test switch.
+  function renderVariant() {
+    document.documentElement.dataset.steps = variant.steps;
+    $('legend').hidden = variant.steps !== 'B';
+    $('scaleHint').hidden = variant.steps === 'B';
+    for (const seg of document.querySelectorAll('.seg')) {
+      for (const b of seg.children) b.setAttribute('aria-pressed', variant[seg.dataset.key] === b.dataset.v);
+    }
+  }
+  for (const seg of document.querySelectorAll('.seg')) {
+    seg.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      variant = { ...variant, [seg.dataset.key]: b.dataset.v };
+      browser.storage.local.set({ devVariant: variant });
+      renderVariant();
+      render();
+    });
   }
 
   buildRows();
@@ -293,14 +396,21 @@
     const w = Math.round(scale.getBoundingClientRect().width);
     if (w && w !== lastW) { lastW = w; drawScale(drag || cfg); }
   }).observe(scale);
-  browser.storage.local.get('settings').then((r) => {
+  browser.storage.local.get(['settings', 'devVariant']).then((r) => {
     cfg = GS.normalize(r.settings);
+    if (r.devVariant) variant = { ...variant, ...r.devVariant };
+    renderVariant();
     render();
   });
   // Changes made in the player panel show up here live.
   browser.storage.onChanged.addListener((c) => {
     if (c.settings && !drag) {
       cfg = GS.normalize(c.settings.newValue);
+      render();
+    }
+    if (c.devVariant && c.devVariant.newValue) {
+      variant = { ...variant, ...c.devVariant.newValue };
+      renderVariant();
       render();
     }
   });

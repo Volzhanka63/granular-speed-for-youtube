@@ -13,11 +13,11 @@
   --accent: #ffb020;
   --accent-text: #8a5300;
   --accent-ink: #1d1404;
-  --focus: #e89a00;
+  --focus: #a86400; /* 4.7:1 on white; amber itself is too faint for a focus ring */
   --focus-wash: rgba(255, 176, 32, .18);
-  --tick: #a5a9b1;
+  --tick: #858a93;
   --tick-major: #33363c;
-  --fine: #d48700;
+  --fine: #b06f00;
   --fine-zone: rgba(255, 176, 32, .16);
   --marker: #e89a00;
 
@@ -47,7 +47,7 @@
     --accent-ink: #1d1404;
     --focus: #ffb020;
     --focus-wash: rgba(255, 176, 32, .16);
-    --tick: #5b6069;
+    --tick: #6b7079;
     --tick-major: #d3d6db;
     --fine: #ffb020;
     --fine-zone: rgba(255, 176, 32, .10);
@@ -124,7 +124,6 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
   height: auto;
   margin: 12px 0 6px;
   touch-action: none;
-  cursor: ew-resize;
   user-select: none;
   overflow: visible;
 }
@@ -142,7 +141,7 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
 .scale .head { fill: var(--marker); }
 .scale .hit { fill: transparent; }
 .scale .marker { cursor: ew-resize; outline: none; }
-.scale .marker:focus-visible .hit { fill: var(--focus-wash); }
+.scale .marker:focus-visible .hit { fill: var(--focus-wash); stroke: var(--focus); stroke-width: 2; }
 .hint { margin: 0; color: var(--muted); font-size: 13px; }
 
 /* Stepper rows */
@@ -157,6 +156,10 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
 }
 .rows .row:first-child { border-top: 0; }
 .row label { flex: 1; cursor: default; }
+.idle-note { display: none; margin-left: 6px; color: var(--muted); font-size: 12px; }
+.row.idle .idle-note { display: inline; }
+.row.idle label > span:first-child,
+.row.idle .stepper { opacity: .5; }
 .row.adjusted .value { animation: adjusted 1.4s ease-out; }
 @keyframes adjusted { 0%, 40% { box-shadow: 0 0 0 2px var(--accent); } }
 
@@ -231,6 +234,10 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
 .chip svg { width: 15px; height: 15px; color: var(--muted); }
 .chip:hover { background: var(--ctl-hover); }
 .chip:hover svg { color: var(--text); }
+/* Saved, but outside the range, so the player hides it */
+.chip.off { background: transparent; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); font-weight: 500; }
+.field-error { margin: 2px 0 0; color: var(--text); font-size: 13px; }
+.field-error::before { content: "! "; color: var(--accent-text); font-weight: 700; }
 .empty { color: var(--muted); font-size: 13px; padding: 6px 0; }
 
 .add { display: inline-flex; align-items: center; gap: 6px; }
@@ -269,6 +276,7 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
 
 /* Footer */
 .foot { display: flex; justify-content: space-between; gap: 12px; padding: 0 2px; }
+.foot-links { display: flex; gap: 14px; }
 .link {
   padding: 4px 0;
   border: 0;
@@ -282,7 +290,29 @@ h2 { margin: 0; font-size: 14px; font-weight: 600; }
 }
 .link:hover { color: var(--text); text-decoration-color: currentColor; }
 
-button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+button:focus-visible,
+a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+.undo { padding: 0 2px; color: var(--accent-text); font-weight: 600; }
+.undo[hidden] { display: none; }
+
+/* Legend under the scale (steps version B) */
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+.legend[hidden] { display: none; }
+.legend .key { display: inline-flex; align-items: center; gap: 6px; }
+.sw { display: inline-block; flex: none; }
+.sw-zone { width: 14px; height: 10px; border-radius: 2px; background: var(--fine-zone); box-shadow: inset 0 -2px 0 var(--fine); }
+.sw-preset { width: 6px; height: 6px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--muted); margin: 0 2px; }
+.sw-marker { width: 0; height: 0; border: 5px solid transparent; border-top: 0; border-bottom: 7px solid var(--marker); }
+
+/* Steps version A: the rows read as one sentence, top to bottom */
+[data-steps="A"] .rows .row { border-top: 0; min-height: calc(var(--row-h) - 6px); }
+[data-steps="A"] .rows .row + .row label { padding-left: 14px; }
+
+/* VARIANT: test switch, removed once a version is picked */
+.devbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 6px 10px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); font-size: 12px; }
+.seg { display: inline-flex; border-radius: 999px; background: var(--ctl-bg); padding: 2px; }
+.seg button { border: 0; padding: 3px 9px; border-radius: 999px; background: none; color: var(--muted); font: inherit; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: var(--card-shadow); }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }

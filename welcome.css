@@ -32,6 +32,8 @@
 }
 .try .step { --step: 40px; }
 .try .hint { min-height: 2.8em; }
+.try .scale { cursor: default; }
+.try .scale .now { fill: var(--text); stroke: var(--surface); stroke-width: 2; }
 
 /* How-to rows */
 .how { padding: 12px 0; border-top: 1px solid var(--line); }

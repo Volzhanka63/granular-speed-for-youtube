@@ -18,8 +18,11 @@ const GS = (() => {
   const num = (v, d) => (typeof v === 'number' && Number.isFinite(v) ? v : d);
   const fit = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 
-  // Fill in defaults and pull every value into a valid range.
-  function normalize(s = {}) {
+  // Fill in defaults and pull every value into a valid range. Presets keep
+  // speeds outside the current range (they come back when the range widens);
+  // activePresets() gives the ones in range.
+  function normalize(s) {
+    if (!s || typeof s !== 'object') s = {};
     const min = r2(fit(num(s.min, DEFAULTS.min), LIMITS.min, LIMITS.max - 0.1));
     const max = r2(fit(num(s.max, DEFAULTS.max), min + 0.1, LIMITS.max));
     const threshold = r2(fit(num(s.threshold, DEFAULTS.threshold), min, max));
@@ -27,11 +30,13 @@ const GS = (() => {
     const stepHigh = r2(fit(num(s.stepHigh, DEFAULTS.stepHigh), LIMITS.stepMin, LIMITS.stepMax));
     const src = Array.isArray(s.presets) ? s.presets : DEFAULTS.presets;
     const presets = [...new Set(src.filter((p) => Number.isFinite(p)).map(r2))]
-      .filter((p) => p >= min && p <= max)
+      .filter((p) => p >= LIMITS.min && p <= LIMITS.max)
       .sort((a, b) => a - b)
       .slice(0, LIMITS.presets);
     return { min, max, threshold, stepLow, stepHigh, presets };
   }
+
+  const activePresets = (s) => s.presets.filter((p) => p >= s.min && p <= s.max);
 
   // Every speed you can step to. The low grid is anchored at 1x so 1x is
   // always reachable; the high grid starts at the threshold.
@@ -57,15 +62,15 @@ const GS = (() => {
     max: [1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10, 12, 16],
   };
 
-  // Settings that the −/+ steppers edit, with their labels. `f` formats a
-  // speed: "2×" on extension pages, "2x" inside YouTube's player.
+  // Settings that the −/+ steppers edit. `name` is the full name for screen
+  // readers; the settings page picks the visible wording.
   const times = (x) => x + '×';
   const FIELDS = [
-    { key: 'stepLow', label: (s, f = times) => 'Step below ' + f(s.threshold) },
-    { key: 'threshold', label: () => 'Step size changes at' },
-    { key: 'stepHigh', label: (s, f = times) => 'Step above ' + f(s.threshold) },
-    { key: 'min', label: () => 'Slowest' },
-    { key: 'max', label: () => 'Fastest' },
+    { key: 'stepLow', name: (s) => 'Step below ' + times(s.threshold) },
+    { key: 'threshold', name: () => 'Where steps change' },
+    { key: 'stepHigh', name: (s) => 'Step above ' + times(s.threshold) },
+    { key: 'min', name: () => 'Slowest speed' },
+    { key: 'max', name: () => 'Fastest speed' },
   ];
 
   function nudge(s, key, dir) {
@@ -78,8 +83,8 @@ const GS = (() => {
     } else {
       const L = LADDERS[key];
       next = dir > 0
-        ? (L.find((v) => v > cur + 1e-9) ?? L[L.length - 1])
-        : (L.findLast((v) => v < cur - 1e-9) ?? L[0]);
+        ? (L.find((v) => v > cur + 1e-9) ?? cur)
+        : (L.findLast((v) => v < cur - 1e-9) ?? cur);
     }
     return normalize({ ...s, [key]: next });
   }
@@ -89,5 +94,5 @@ const GS = (() => {
   const withPreset = (s, v) => normalize({ ...s, presets: [...s.presets, v] });
   const withoutPreset = (s, v) => normalize({ ...s, presets: s.presets.filter((p) => p !== v) });
 
-  return { DEFAULTS, LIMITS, FIELDS, normalize, speeds, nudge, canNudge, withPreset, withoutPreset, r2 };
+  return { DEFAULTS, LIMITS, FIELDS, normalize, activePresets, speeds, nudge, canNudge, withPreset, withoutPreset, r2 };
 })();

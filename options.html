@@ -8,19 +8,29 @@
 </head>
 <body>
   <main class="app">
+    <!-- VARIANT: test switch, removed once a version is picked -->
+    <div id="devbar" class="devbar" role="group" aria-label="Test versions">
+      <span>Test</span>
+      <span class="seg" data-key="steps"><button type="button" data-v="A">Steps A</button><button type="button" data-v="B">Steps B</button></span>
+      <span class="seg" data-key="pos"><button type="button" data-v="corner">Corner</button><button type="button" data-v="button">From button</button></span>
+    </div>
+
     <header class="top">
       <img src="icons/48.png" alt="" width="24" height="24">
       <h1>Granular Speed</h1>
       <span id="status" class="status" role="status"></span>
+      <button id="undo" class="link undo" type="button" hidden>Undo</button>
       <button id="close" class="close" type="button" aria-label="Close settings" hidden></button>
     </header>
 
     <section class="scale-card" aria-labelledby="scaleTitle">
       <div class="scale-head">
         <h2 id="scaleTitle">Your speeds</h2>
-        <span class="hint">Drag the marker to move the switch point</span>
+        <span id="scaleHint" class="hint">Drag ▲ to set where steps change</span>
       </div>
-      <svg id="scale" class="scale" role="group" aria-labelledby="scaleTitle"></svg>
+      <svg id="scale" class="scale" role="group" aria-labelledby="scaleTitle" aria-describedby="scaleSummary"></svg>
+      <p id="legend" class="legend" hidden></p>
+      <p id="scaleSummary" class="sr-only"></p>
     </section>
 
     <section class="group" aria-labelledby="stepsTitle">
@@ -37,18 +47,22 @@
     <section class="group" aria-labelledby="presetsTitle">
       <div class="group-head">
         <h2 id="presetsTitle">Presets</h2>
-        <form id="addForm" class="add">
+        <form id="addForm" class="add" novalidate>
           <label for="addInput" class="sr-only">Add a preset speed</label>
-          <input id="addInput" type="number" inputmode="decimal" step="0.05" min="0.1" max="16" placeholder="e.g. 2.3">
+          <input id="addInput" type="number" inputmode="decimal" step="any" placeholder="e.g. 2.3" aria-describedby="presetError">
           <button type="submit">Add</button>
         </form>
         <span id="presetNote" class="hint" hidden>8 is the limit. Remove one to add another.</span>
       </div>
+      <p id="presetError" class="field-error" hidden></p>
       <div id="chips" class="chips"></div>
     </section>
 
     <footer class="foot">
-      <a class="link" href="welcome.html" target="_blank">Quick guide</a>
+      <span class="foot-links">
+        <a class="link" href="welcome.html" target="_blank" rel="noopener">Quick guide</a>
+        <a class="link" href="https://addons.mozilla.org/firefox/addon/granular-speed-for-youtube/" target="_blank" rel="noopener">Rate this add-on</a>
+      </span>
       <button id="reset" type="button" class="link">Reset to defaults</button>
     </footer>
   </main>

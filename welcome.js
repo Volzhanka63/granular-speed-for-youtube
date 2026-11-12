@@ -8,7 +8,7 @@
   let cfg = GS.normalize();
   let list = GS.speeds(cfg);
   let speed = 1;
-  let last = 1;
+  let last = null; // what R returns to; until you pick a speed, the first preset above 1×
 
   function svgEl(tag, attrs, parent) {
     const e = document.createElementNS(NS, tag);
@@ -45,25 +45,32 @@
       const len = major ? 20 : Number.isInteger(v * 2) ? 14 : 8;
       svgEl('line', { class: 'tick' + (v > cfg.threshold + 1e-9 ? ' fine' : '') + (major ? ' major' : ''), x1: x(v), x2: x(v), y1: base, y2: base - len }, svg);
     }
-    const placed = [];
+    const placed = [x(cfg.threshold)]; // the marker carries its own label
     for (const v of [cfg.min, 1, ...Array.from({ length: Math.floor(cfg.max) }, (_, i) => i + 1), cfg.max]) {
       if (v < cfg.min || v > cfg.max || placed.some((p) => Math.abs(p - x(v)) < 30)) continue;
       placed.push(x(v));
       svgEl('text', { class: 'label', x: x(v), y: base + 19, 'text-anchor': 'middle' }, svg).textContent = String(v);
     }
-    // the needle follows the current speed
-    // head above the ticks so it never covers an axis label
-    svgEl('line', { class: 'needle', x1: x(speed), x2: x(speed), y1: base - 28, y2: base + 2 }, svg);
-    svgEl('path', { class: 'head', d: `M${x(speed) - 6} ${base - 36} L${x(speed) + 6} ${base - 36} L${x(speed)} ${base - 28} Z` }, svg);
+    // The amber ▲ marks where steps change, as on the settings page; the
+    // current speed is a plain dot riding on the line.
+    const mx = x(cfg.threshold);
+    svgEl('line', { class: 'needle', x1: mx, x2: mx, y1: base - 28, y2: base + 2 }, svg);
+    svgEl('path', { class: 'head', d: `M${mx} ${base + 3} L${mx + 5} ${base + 10} L${mx - 5} ${base + 10} Z` }, svg);
+    svgEl('text', { class: 'mlabel', x: mx, y: base - 32, 'text-anchor': 'middle' }, svg).textContent = fmt(cfg.threshold);
+    svgEl('circle', { class: 'now', cx: x(speed), cy: base, r: 5 }, svg);
   }
 
   function render() {
     $('trySpeed').textContent = fmt(speed);
     const next = step(1);
     const by = GS.r2(next - speed);
+    // Explain the second step size once, at the point where it starts.
+    const why = speed === cfg.threshold && cfg.stepHigh < cfg.stepLow && cfg.threshold < cfg.max
+      ? ' Above ' + fmt(cfg.threshold) + ' the step is smaller, where small changes matter more.'
+      : '';
     $('tryNote').textContent = speed >= cfg.max
       ? 'That’s the fastest speed in your settings. R jumps back to 1×.'
-      : 'Next press: +' + by + '× to ' + fmt(next) + '. The step gets smaller above ' + fmt(cfg.threshold) + ', where small changes matter more.';
+      : 'Next press: +' + by + '× to ' + fmt(next) + '.' + why;
     $('trySlower').disabled = speed <= cfg.min;
     $('tryFaster').disabled = speed >= cfg.max;
     draw();
@@ -74,6 +81,7 @@
     if (v !== 1) last = v;
     render();
   }
+  const back = () => last ?? GS.activePresets(cfg).find((p) => p > 1) ?? step(1);
 
   $('trySlower').addEventListener('click', () => set(step(-1)));
   $('tryFaster').addEventListener('click', () => set(step(1)));
@@ -81,7 +89,7 @@
     if (e.ctrlKey || e.altKey || e.metaKey) return;
     if (e.shiftKey && e.code === 'Period') set(step(1));
     else if (e.shiftKey && e.code === 'Comma') set(step(-1));
-    else if (!e.shiftKey && e.code === 'KeyR') set(speed === 1 ? last : 1);
+    else if (!e.shiftKey && e.code === 'KeyR') set(speed === 1 ? back() : 1);
     else return;
     e.preventDefault();
   });
@@ -92,6 +100,8 @@
   browser.storage.local.get('settings').then((r) => {
     cfg = GS.normalize(r.settings);
     list = GS.speeds(cfg);
+    if (speed < cfg.min || speed > cfg.max) speed = cfg.min > 1 ? cfg.min : cfg.max;
+    $('range').textContent = fmt(cfg.min) + ' to ' + fmt(cfg.max);
     const d = GS.DEFAULTS;
     if (cfg.stepLow !== d.stepLow || cfg.stepHigh !== d.stepHigh || cfg.threshold !== d.threshold) {
       $('stepsText').textContent = 'With your settings, speed moves ' + cfg.stepLow + '× at a time up to ' + fmt(cfg.threshold) +
